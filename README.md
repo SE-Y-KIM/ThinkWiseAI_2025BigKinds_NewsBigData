@@ -28,8 +28,6 @@ ThinkWise는 사용자가 투자 관련 질문을 하면 AI가 분석하고, 추
 - **Chart.js** - 데이터 시각화
 
 ## 📁 프로젝트 구조
-
-```
 thinkwise-mvp/
 ├── thinkwise-backend/          # FastAPI 백엔드
 │   ├── app/
@@ -46,8 +44,7 @@ thinkwise-mvp/
 │   ├── package.json           # Node.js 의존성
 │   └── tailwind.config.js     # Tailwind 설정
 └── database/
-    └── tables.sql             # 데이터베이스 스키마
-```
+└── tables.sql             # 데이터베이스 스키마
 
 ## 🛠️ 설치 및 실행
 
@@ -58,18 +55,9 @@ thinkwise-mvp/
 cd thinkwise-mvp/thinkwise-backend
 cp .env.example .env
 # .env 파일에 OpenAI API 키 등 설정
-```
-
-#### Frontend 환경 변수 설정
-```bash
 cd thinkwise-mvp/thinkwise-frontend
 cp .env.local.example .env.local
 # 필요한 환경 변수 설정
-```
-
-### 2. Backend 실행
-
-```bash
 cd thinkwise-mvp/thinkwise-backend
 
 # 가상환경 생성 및 활성화
@@ -83,11 +71,6 @@ pip install -r requirements.txt
 python main.py
 # 또는
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
-
-### 3. Frontend 실행
-
-```bash
 cd thinkwise-mvp/thinkwise-frontend
 
 # 의존성 설치
@@ -95,56 +78,58 @@ npm install
 
 # 개발 서버 실행
 npm run dev
-```
 
-### 4. 데이터베이스 설정
+4. 데이터베이스 설정
+Supabase 프로젝트 생성
 
-1. Supabase 프로젝트 생성
-2. SQL Editor에서 `database/tables.sql` 실행
-3. 환경 변수에 데이터베이스 연결 정보 설정
+SQL Editor에서 database/tables.sql 실행
 
-## 🌐 접속 방법
+환경 변수에 데이터베이스 연결 정보 설정
 
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API 문서**: http://localhost:8000/docs
+🌐 접속 방법
+Frontend: http://localhost:3000
 
-## 🔧 개발 가이드
+Backend API: http://localhost:8000
 
-### API 엔드포인트
+API 문서: http://localhost:8000/docs
 
-- `POST /api/chat` - AI와 채팅
-- `GET /` - 헬스 체크
-- `GET /health` - 서비스 상태 확인
+🔧 개발 가이드
+API 엔드포인트
+POST /api/chat - AI와 채팅
 
-### 컴포넌트 구조
+GET / - 헬스 체크
 
-- `ChatInterface` - 메인 채팅 컴포넌트
-- `Chart` - 데이터 시각화 컴포넌트
-- `FollowUpQuestions` - 꼬리 질문 표시
+GET /health - 서비스 상태 확인
 
-## 📋 TODO (MVP 이후)
+컴포넌트 구조
+ChatInterface - 메인 채팅 컴포넌트
 
-- [ ] Big KINDS 뉴스 API 연동
-- [ ] DART 재무제표 API 연동
-- [ ] KOSIS 통계 데이터 연동
-- [ ] 사용자 인증 시스템
-- [ ] 채팅 기록 저장 및 불러오기
-- [ ] 리포트 생성 및 공유 기능
-- [ ] 커뮤니티 기능
+Chart - 데이터 시각화 컴포넌트
 
-## 🤝 기여 방법
+FollowUpQuestions - 꼬리 질문 표시
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+📋 TODO (MVP 이후)
+[ ] Big KINDS 뉴스 API 연동
+[ ] DART 재무제표 API 연동
+[ ] KOSIS 통계 데이터 연동
+[ ] 사용자 인증 시스템
+[ ] 채팅 기록 저장 및 불러오기
+[ ] 리포트 생성 및 공유 기능
+[ ] 커뮤니티 기능
 
-## 📄 라이선스
+🤝 기여 방법
+Fork the Project
 
+Create your Feature Branch (git checkout -b feature/AmazingFeature)
+
+Commit your Changes (git commit -m 'Add some AmazingFeature')
+
+Push to the Branch (git push origin feature/AmazingFeature)
+
+Open a Pull Request
+
+📄 라이선스
 이 프로젝트는 MIT 라이선스 하에 배포됩니다.
 
-## 📞 문의
-
+📞 문의
 프로젝트에 대한 문의사항이 있으시면 이슈를 생성해주세요.
