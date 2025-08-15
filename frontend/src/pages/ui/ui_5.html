@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>샘플 리포트 - ThinkWise AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Primary Colors - Gold Theme */
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+
+            /* Background Colors - Dark Theme */
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+
+            /* Text Colors */
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+
+            /* Border Colors */
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-dark: #5A5A5A;
+
+            /* Spacing */
+            --spacing-1: 0.25rem;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-6: 1.5rem;
+            --spacing-8: 2rem;
+            --spacing-12: 3rem;
+            --spacing-16: 4rem;
+
+            /* Border Radius */
+            --border-radius-sm: 0.375rem;
+            --border-radius-base: 0.5rem;
+            --border-radius-md: 0.75rem;
+            --border-radius-lg: 1rem;
+            --border-radius-xl: 1.5rem;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-4) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: var(--spacing-8);
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.25s ease-in-out;
+        }
+
+        .nav-menu a:hover {
+            color: var(--color-primary-500);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-4);
+            align-items: center;
+        }
+
+        .btn {
+            padding: var(--spacing-3) var(--spacing-6);
+            border-radius: var(--border-radius-base);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease-in-out;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-primary-500);
+            border: 2px solid var(--color-primary-500);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-primary-900);
+            border-color: var(--color-primary-600);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--spacing-16) var(--spacing-6);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: var(--spacing-16);
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: var(--spacing-6);
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Report Summary */
+        .report-summary {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-8);
+            margin-bottom: var(--spacing-16);
+        }
+
+        .report-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: var(--spacing-4);
+            color: var(--color-text-primary);
+        }
+
+        .report-summary-text {
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+            line-height: 1.7;
+            margin-bottom: var(--spacing-6);
+        }
+
+        /* Key Indicators */
+        .key-indicators {
+            margin-bottom: var(--spacing-16);
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-8);
+            color: var(--color-text-primary);
+        }
+
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-6);
+        }
+
+        .indicator-card {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            text-align: center;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .indicator-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.1);
+            border-color: var(--color-primary-500);
+        }
+
+        .indicator-value {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: var(--spacing-2);
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .indicator-label {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            margin-bottom: var(--spacing-16);
+        }
+
+        .chart-container {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-8);
+            margin-bottom: var(--spacing-8);
+        }
+
+        .chart-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-6);
+            color: var(--color-text-primary);
+        }
+
+        .chart-placeholder {
+            background: var(--color-background-tertiary);
+            border-radius: var(--border-radius-base);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-tertiary);
+            font-size: 1.125rem;
+            border: 2px dashed var(--color-border-medium);
+        }
+
+        /* AI Analysis Points */
+        .analysis-points {
+            margin-bottom: var(--spacing-16);
+        }
+
+        .points-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-6);
+        }
+
+        .analysis-card {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            transition: all 0.25s ease-in-out;
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.1);
+            border-color: var(--color-primary-500);
+        }
+
+        .analysis-card.positive {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .analysis-card.negative {
+            border-left: 4px solid #F44336;
+        }
+
+        .analysis-card.neutral {
+            border-left: 4px solid var(--color-primary-500);
+        }
+
+        .analysis-type {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: var(--spacing-3);
+            letter-spacing: 0.05em;
+        }
+
+        .analysis-card.positive .analysis-type {
+            color: #4CAF50;
+        }
+
+        .analysis-card.negative .analysis-type {
+            color: #F44336;
+        }
+
+        .analysis-card.neutral .analysis-type {
+            color: var(--color-primary-500);
+        }
+
+        .analysis-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: var(--spacing-3);
+            color: var(--color-text-primary);
+        }
+
+        .analysis-content {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-12);
+            text-align: center;
+            margin-bottom: var(--spacing-16);
+        }
+
+        .banner-content h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-4);
+            color: var(--color-background-primary);
+        }
+
+        .banner-content p {
+            color: var(--color-background-primary);
+            font-size: 1.125rem;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .banner-btn {
+            background: var(--color-background-primary);
+            color: var(--color-primary-500);
+            padding: var(--spacing-4) var(--spacing-8);
+            border-radius: var(--border-radius-base);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease-in-out;
+            display: inline-block;
+        }
+
+        .banner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Trust Message */
+        .trust-message {
+            text-align: center;
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-12);
+        }
+
+        .trust-message h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-4);
+            color: var(--color-text-primary);
+        }
+
+        .trust-message p {
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: var(--spacing-4);
+            }
+
+            .nav-menu {
+                gap: var(--spacing-4);
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .report-title {
+                font-size: 1.5rem;
+            }
+
+            .indicators-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .points-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                padding: var(--spacing-8) var(--spacing-4);
+            }
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700), var(--color-primary-900), var(--color-primary-500));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">ThinkWise</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">제품</a></li>
+                    <li><a href="#">가격</a></li>
+                    <li><a href="#">커뮤니티</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn btn-secondary">로그인</a>
+                <a href="#" class="btn btn-primary">무료로 시작</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="gradient-text">AI가 만든 리포트를 직접 확인하세요</h1>
+            <p>뉴스·데이터·시각화를 결합한 ThinkWise AI 리포트 예시를 살펴보고, 분석의 깊이를 경험해보세요.</p>
+        </section>
+
+        <!-- Report Summary -->
+        <section class="report-summary">
+            <h2 class="report-title">2024년 3분기 반도체 시장 전망</h2>
+            <p class="report-summary-text">
+                글로벌 반도체 수요 회복과 AI 데이터센터 투자 확대에 따라 주요 기업의 실적이 개선될 것으로 전망됩니다. 
+                하지만 공급 과잉 가능성과 지정학적 리스크는 여전히 변수로 남아 있습니다.
+            </p>
+        </section>
+
+        <!-- Key Indicators -->
+        <section class="key-indicators">
+            <h3 class="section-title">핵심 지표</h3>
+            <div class="indicators-grid">
+                <div class="indicator-card">
+                    <div class="indicator-value">+8.4%</div>
+                    <div class="indicator-label">시장 성장률 (YoY)</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value">+5.2%</div>
+                    <div class="indicator-label">주요 기업 주가 평균</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value">+1.1%</div>
+                    <div class="indicator-label">원자재 가격 변동</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <h3 class="section-title">차트·시각화</h3>
+            
+            <div class="chart-container">
+                <h4 class="chart-title">글로벌 반도체 매출 추이 (2018~2024)</h4>
+                <div class="chart-placeholder">
+                    📊 차트 영역 - 매출 추이 그래프
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h4 class="chart-title">주요 기업별 시장 점유율</h4>
+                <div class="chart-placeholder">
+                    🥧 차트 영역 - 원형 차트
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h4 class="chart-title">가격 변동성 히트맵</h4>
+                <div class="chart-placeholder">
+                    🔥 차트 영역 - 히트맵
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Analysis Points -->
+        <section class="analysis-points">
+            <h3 class="section-title">AI 분석 포인트</h3>
+            <div class="points-grid">
+                <div class="analysis-card positive">
+                    <div class="analysis-type">긍정 요인</div>
+                    <h4 class="analysis-title">AI 서버 수요 폭발</h4>
+                    <p class="analysis-content">
+                        AI 서버와 데이터센터 수요가 급증하면서 반도체 시장의 성장 동력이 강화되고 있습니다. 
+                        주요 클라우드 업체들의 AI 인프라 투자가 확대되고 있어 수요 증가가 지속될 것으로 예상됩니다.
+                    </p>
+                </div>
+
+                <div class="analysis-card positive">
+                    <div class="analysis-type">긍정 요인</div>
+                    <h4 class="analysis-title">주요국 반도체 산업 정책 지원</h4>
+                    <p class="analysis-content">
+                        미국, EU, 한국 등 주요국에서 반도체 산업 육성을 위한 정책 지원이 확대되고 있습니다. 
+                        이는 장기적인 시장 성장과 기술 발전을 촉진할 것으로 기대됩니다.
+                    </p>
+                </div>
+
+                <div class="analysis-card negative">
+                    <div class="analysis-type">부정 요인</div>
+                    <h4 class="analysis-title">원자재 가격 상승</h4>
+                    <p class="analysis-content">
+                        반도체 제조에 필요한 원자재 가격이 상승하고 있어 제조 비용 증가가 우려됩니다. 
+                        이는 기업들의 수익성에 부정적 영향을 미칠 수 있습니다.
+                    </p>
+                </div>
+
+                <div class="analysis-card negative">
+                    <div class="analysis-type">부정 요인</div>
+                    <h4 class="analysis-title">미·중 무역 갈등 지속</h4>
+                    <p class="analysis-content">
+                        미·중 간 기술 경쟁과 무역 제재가 지속되면서 공급망 불안정성이 증가하고 있습니다. 
+                        이는 시장 변동성을 높이는 요인으로 작용할 수 있습니다.
+                    </p>
+                </div>
+
+                <div class="analysis-card neutral">
+                    <div class="analysis-type">중립 시나리오</div>
+                    <h4 class="analysis-title">수요·공급 균형 유지</h4>
+                    <p class="analysis-content">
+                        AI 수요 증가와 공급 확대가 균형을 이루면서 안정적인 성장세를 유지할 가능성이 있습니다. 
+                        이 경우 완만한 성장세가 지속될 것으로 예상됩니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Banner -->
+        <section class="cta-banner">
+            <div class="banner-content">
+                <h3>당신만의 맞춤형 리포트를 만들어보세요</h3>
+                <p>ThinkWise AI와 함께 더 정확하고 깊이 있는 투자 분석을 시작하세요</p>
+                <a href="#" class="banner-btn">분석 시작하기</a>
+            </div>
+        </section>
+
+        <!-- Trust Message -->
+        <section class="trust-message">
+            <h3>데이터와 AI 분석을 결합해, 더 빠르고 더 명확한 투자 결정을</h3>
+            <p>ThinkWise AI는 객관적이고 신뢰할 수 있는 분석을 제공합니다.</p>
+        </section>
+    </main>
+
+    <script>
+        // Add hover effects to cards
+        document.querySelectorAll('.indicator-card, .analysis-card, .chart-container').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '1';
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ThinkWise Sample Report page loaded');
+        });
+    </script>
+</body>
+</html>

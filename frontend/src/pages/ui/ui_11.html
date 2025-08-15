@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkWise AI - 다각도 뉴스 요약</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+            
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+            
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+            
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-focus: #FFD700;
+            
+            --font-family-primary: 'Montserrat', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .user-plan {
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+        }
+
+        .compare-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .search-container {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border-medium);
+            border-radius: var(--border-radius-md);
+            background: var(--color-background-tertiary);
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.02));
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        .search-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            color: var(--color-background-primary);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .example-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .example-topic {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .example-topic:hover {
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-500);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .comparison-card {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+            background: linear-gradient(135deg, var(--color-background-secondary), rgba(255, 215, 0, 0.05));
+        }
+
+        .comparison-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .comparison-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .comparison-icon.pro {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .comparison-icon.con {
+            background: linear-gradient(135deg, #F44336, #d32f2f);
+            color: white;
+        }
+
+        .comparison-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .comparison-summary {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .summary-title {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .summary-text {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .evidence-list {
+            list-style: none;
+        }
+
+        .evidence-item {
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-border-light);
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .evidence-item:last-child {
+            border-bottom: none;
+        }
+
+        .evidence-item::before {
+            content: '•';
+            color: var(--color-primary-500);
+            font-weight: bold;
+            margin-right: var(--spacing-sm);
+        }
+
+        /* Key Indicators */
+        .indicators-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .indicators-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .indicator-card {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            transition: all 0.3s ease;
+        }
+
+        .indicator-card:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.05));
+        }
+
+        .indicator-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .indicator-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* AI Insight */
+        .ai-insight {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .insight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .insight-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .insight-text {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .action-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            color: var(--color-background-primary);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.03), rgba(255, 165, 0, 0.03));
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .disclaimer-text {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Loading State */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--color-text-secondary);
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--color-border-light);
+            border-top: 3px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .comparison-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .compare-container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                display: none;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="ui_1.html" class="brand">
+                <span class="logo-icon">🧠</span>
+                <span class="brand-name">ThinkWise</span>
+            </a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-name">김사용자</div>
+                    <div class="user-plan">Pro 플랜</div>
+                </div>
+                <div class="user-avatar">김</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="compare-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">다각도 뉴스 요약</h1>
+                <p class="page-subtitle">하나의 이슈를 찬반 시각과 다양한 출처를 통해 입체적으로 분석합니다.</p>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="분석할 뉴스 주제나 키워드를 입력하세요"
+                    >
+                    <button class="search-button" id="searchButton">분석 시작</button>
+                </div>
+                <div class="example-topics">
+                    <div class="example-topic">한국 전기차 보조금 정책 효과</div>
+                    <div class="example-topic">미·중 무역 분쟁 장기화 전망</div>
+                    <div class="example-topic">AI 반도체 수요 폭발</div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading" id="loadingState">
+                <div class="loading-text">뉴스 수집 및 분석 중...</div>
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Comparison Results -->
+            <div id="comparisonResults" style="display: none;">
+                <!-- Comparison Section -->
+                <div class="comparison-section">
+                    <!-- Pro Side -->
+                    <div class="comparison-card">
+                        <div class="comparison-header">
+                            <div class="comparison-icon pro">✓</div>
+                            <h3 class="comparison-title">찬성 측 요약</h3>
+                        </div>
+                        <div class="comparison-summary">
+                            <div class="summary-title">요약</div>
+                            <div class="summary-text">
+                                보조금 정책이 전기차 판매량을 35% 이상 증가시켰으며, 탄소배출 감소에도 기여했다.
+                            </div>
+                        </div>
+                        <div class="evidence-list">
+                            <div class="evidence-item">판매 통계 자료 (산업통상자원부)</div>
+                            <div class="evidence-item">환경부 온실가스 감축 보고서</div>
+                            <div class="evidence-item">글로벌 시장조사기관 리포트</div>
+                        </div>
+                    </div>
+
+                    <!-- Con Side -->
+                    <div class="comparison-card">
+                        <div class="comparison-header">
+                            <div class="comparison-icon con">✗</div>
+                            <h3 class="comparison-title">반대 측 요약</h3>
+                        </div>
+                        <div class="comparison-summary">
+                            <div class="summary-title">요약</div>
+                            <div class="summary-text">
+                                보조금은 단기 판매 촉진에만 효과적이며, 장기적으로 산업 경쟁력을 저하시킬 수 있다.
+                            </div>
+                        </div>
+                        <div class="evidence-list">
+                            <div class="evidence-item">해외 사례 비교 (EU, 중국)</div>
+                            <div class="evidence-item">국내 자동차 산업 구조 분석</div>
+                            <div class="evidence-item">민간 연구소 보고서</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Indicators -->
+                <div class="indicators-section">
+                    <h3 class="indicators-title">핵심 지표 비교</h3>
+                    <div class="indicators-grid">
+                        <div class="indicator-card">
+                            <div class="indicator-name">정책 시행 전후 전기차 판매량 변화</div>
+                            <div class="indicator-value">+35%</div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-name">탄소배출량 추이</div>
+                            <div class="indicator-value">-12%</div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="indicator-name">산업 고용 지표 변동</div>
+                            <div class="indicator-value">+8%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insight -->
+                <div class="ai-insight">
+                    <div class="insight-header">
+                        <div class="insight-icon">🤖</div>
+                        <h3 class="insight-title">AI 인사이트</h3>
+                    </div>
+                    <div class="insight-text">
+                        단기적 친환경 목표 달성에는 효과가 있으나, 기술 혁신 촉진과 산업 구조 개선이 병행되지 않으면 장기 경쟁력은 제한적일 수 있음.
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="action-button">리포트로 저장</button>
+                    <button class="action-button">시각화 생성</button>
+                    <button class="action-button">커뮤니티 토론 열기</button>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <p class="disclaimer-text">
+                    찬반 요약은 다양한 출처를 기반으로 생성되며, 의견의 균형을 맞추기 위해 노력합니다.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const loadingState = document.getElementById('loadingState');
+        const comparisonResults = document.getElementById('comparisonResults');
+
+        // Search function
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            // Show loading
+            loadingState.style.display = 'block';
+            comparisonResults.style.display = 'none';
+
+            // Simulate analysis
+            setTimeout(() => {
+                loadingState.style.display = 'none';
+                comparisonResults.style.display = 'block';
+                
+                // Scroll to results
+                comparisonResults.scrollIntoView({ behavior: 'smooth' });
+            }, 3000);
+        }
+
+        // Event listeners
+        searchButton.addEventListener('click', performSearch);
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Example topic click handlers
+        document.querySelectorAll('.example-topic').forEach(topic => {
+            topic.addEventListener('click', function() {
+                searchInput.value = this.textContent;
+                searchInput.focus();
+            });
+        });
+
+        // Action button handlers
+        document.querySelectorAll('.action-button').forEach(button => {
+            button.addEventListener('click', function() {
+                alert(`${this.textContent} 기능이 실행됩니다.`);
+            });
+        });
+
+        // Auto-focus search input on page load
+        window.addEventListener('load', function() {
+            searchInput.focus();
+        });
+    </script>
+</body>
+</html>
