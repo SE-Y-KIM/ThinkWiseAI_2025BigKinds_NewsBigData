@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkWise AI - 리포트 생성 완료</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+            
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+            
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+            
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-focus: #FFD700;
+            
+            --font-family-primary: 'Montserrat', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-plan {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.2rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-2xl);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border-radius: var(--border-radius-xl);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: successPulse 2s ease-in-out infinite;
+        }
+
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+        }
+
+        .success-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Report Preview */
+        .report-preview {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .preview-date {
+            color: var(--color-text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        .preview-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .keyword-tag {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--color-primary-500);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .preview-summary {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border: none;
+            border-radius: var(--border-radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.05));
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--color-primary-500);
+            color: var(--color-primary-500);
+        }
+
+        .btn-outline:hover {
+            background: var(--color-primary-500);
+            color: var(--color-background-primary);
+            transform: translateY(-1px);
+        }
+
+        /* Help Section */
+        .help-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.03), rgba(255, 165, 0, 0.03));
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+        }
+
+        .help-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-primary-500);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .help-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .help-item {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .help-item::before {
+            content: "•";
+            color: var(--color-primary-500);
+            font-weight: bold;
+        }
+
+        /* Status Message */
+        .status-message {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            display: none;
+        }
+
+        .status-text {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-header {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                gap: var(--spacing-sm);
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .success-icon {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="ui_1.html" class="brand">
+                <span class="logo-icon">🧠</span>
+                <span class="brand-name">ThinkWise</span>
+            </a>
+            <div class="user-info">
+                <div class="user-avatar">김</div>
+                <div class="user-plan">Pro</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">리포트 생성 완료</h1>
+                <p class="page-subtitle">AI 분석과 시각화가 적용된 리포트가 완성되었습니다.</p>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message">
+                <div class="success-icon">🎉</div>
+                <h2 class="success-title">리포트가 성공적으로 생성되었습니다!</h2>
+                <p class="success-subtitle">저장, 공유, 다운로드 기능을 사용해 보세요.</p>
+            </div>
+
+            <!-- Report Preview -->
+            <div class="report-preview">
+                <div class="preview-header">
+                    <div>
+                        <h3 class="preview-title">2024년 글로벌 반도체 시장 전망</h3>
+                        <p class="preview-date">작성일: 2024-08-15</p>
+                    </div>
+                </div>
+
+                <div class="preview-keywords">
+                    <span class="keyword-tag">AI 반도체</span>
+                    <span class="keyword-tag">서버 수요</span>
+                    <span class="keyword-tag">원자재 가격</span>
+                </div>
+
+                <p class="preview-summary">
+                    글로벌 반도체 시장은 AI 데이터센터 수요 확대로 성장세를 이어갈 전망이지만, 공급망 불안과 원자재 가격 상승이 주요 변수로 작용할 수 있습니다.
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-button btn-primary" onclick="downloadReport()">
+                    📄 리포트 다운로드 (PDF)
+                </button>
+                <button class="action-button btn-secondary" onclick="shareReport()">
+                    🔗 커뮤니티에 공유
+                </button>
+                <button class="action-button btn-outline" onclick="startNewAnalysis()">
+                    ➕ 새 분석 시작하기
+                </button>
+                <a href="ui_9.html" class="action-button btn-outline">
+                    📊 대시보드로 이동
+                </a>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <h4 class="help-title">💡 도움말</h4>
+                <ul class="help-list">
+                    <li class="help-item">저장된 리포트는 '리포트 히스토리'에서 다시 확인할 수 있습니다.</li>
+                    <li class="help-item">공유 시에는 제목, 요약, 주요 차트를 포함한 미리보기 링크가 생성됩니다.</li>
+                    <li class="help-item">PDF 다운로드는 고화질 차트와 상세 분석을 포함합니다.</li>
+                </ul>
+            </div>
+
+            <!-- Status Message -->
+            <div class="status-message" id="statusMessage">
+                <p class="status-text" id="statusText"></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Download report
+        function downloadReport() {
+            const statusMessage = document.getElementById('statusMessage');
+            const statusText = document.getElementById('statusText');
+            
+            statusText.textContent = '리포트를 준비 중입니다...';
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusText.textContent = '다운로드가 시작되었습니다!';
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 3000);
+            }, 2000);
+        }
+
+        // Share report
+        function shareReport() {
+            const statusMessage = document.getElementById('statusMessage');
+            const statusText = document.getElementById('statusText');
+            
+            statusText.textContent = '커뮤니티에 공유 중...';
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusText.textContent = '커뮤니티에 리포트가 공유되었습니다.';
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 3000);
+            }, 1500);
+        }
+
+        // Start new analysis
+        function startNewAnalysis() {
+            window.location.href = 'ui_12.html';
+        }
+
+        // Auto-hide status messages
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show completion animation
+            const successIcon = document.querySelector('.success-icon');
+            successIcon.style.animation = 'successPulse 2s ease-in-out infinite';
+        });
+    </script>
+</body>
+</html>

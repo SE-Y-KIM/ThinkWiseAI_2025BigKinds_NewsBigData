@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkWise AI - 리포트 생성 2단계</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+            
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+            
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+            
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-focus: #FFD700;
+            
+            --font-family-primary: 'Montserrat', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .user-plan {
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+        }
+
+        .step-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .progress-bar {
+            background: var(--color-background-tertiary);
+            border-radius: var(--border-radius-lg);
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            height: 100%;
+            width: 50%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .step-indicator {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Keywords Summary */
+        .keywords-summary {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .summary-title {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .summary-keywords {
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+
+        /* Input Sections */
+        .input-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .input-group {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .input-label {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.1rem;
+        }
+
+        .topic-input {
+            width: 100%;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border-medium);
+            border-radius: var(--border-radius-md);
+            background: var(--color-background-tertiary);
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.02));
+        }
+
+        .topic-input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        .input-description {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Subtopics Section */
+        .subtopics-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .subtopics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .subtopics-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .add-subtopic-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            color: var(--color-background-primary);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .add-subtopic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .subtopics-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .subtopic-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-md);
+            transition: all 0.3s ease;
+        }
+
+        .subtopic-item:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.05));
+        }
+
+        .drag-handle {
+            cursor: grab;
+            color: var(--color-text-tertiary);
+            font-size: 1.2rem;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .subtopic-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            padding: var(--spacing-sm);
+        }
+
+        .subtopic-input:focus {
+            outline: none;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .remove-subtopic {
+            background: none;
+            border: none;
+            color: #F44336;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: var(--spacing-xs);
+            border-radius: var(--border-radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .remove-subtopic:hover {
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        /* Recommended Subtopics */
+        .recommended-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .recommended-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        .recommended-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .recommended-item {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .recommended-item:hover {
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-500);
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Help Section */
+        .help-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .help-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        .help-list {
+            list-style: none;
+        }
+
+        .help-item {
+            padding: var(--spacing-sm) 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .help-item::before {
+            content: '•';
+            color: var(--color-primary-500);
+            font-weight: bold;
+        }
+
+        /* Next Step Section */
+        .next-step-section {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .next-step-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            color: var(--color-background-primary);
+            border: none;
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            border-radius: var(--border-radius-md);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .next-step-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .next-step-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .next-step-description {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-top: var(--spacing-md);
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .step-container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .input-section,
+            .subtopics-section,
+            .recommended-section,
+            .help-section {
+                padding: var(--spacing-lg);
+            }
+
+            .recommended-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subtopics-header {
+                flex-direction: column;
+                gap: var(--spacing-md);
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                display: none;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="ui_1.html" class="brand">
+                <span class="logo-icon">🧠</span>
+                <span class="brand-name">ThinkWise</span>
+            </a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-name">김사용자</div>
+                    <div class="user-plan">Pro 플랜</div>
+                </div>
+                <div class="user-avatar">김</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="step-container">
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>2단계: 주제와 소주제 설정</span>
+                    <span class="step-indicator">50% 완료</span>
+                </div>
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">리포트 생성 – 2단계: 주제와 소주제 설정</h1>
+                <p class="page-subtitle">선택한 키워드를 중심으로 분석할 주제와 세부 항목을 구성하세요.</p>
+            </div>
+
+            <!-- Keywords Summary -->
+            <div class="keywords-summary">
+                <div class="summary-title">선택된 키워드</div>
+                <div class="summary-keywords" id="keywordsSummary">키워드를 불러오는 중...</div>
+            </div>
+
+            <!-- Main Topic Input -->
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="mainTopicInput" class="input-label">주제 입력</label>
+                    <input 
+                        type="text" 
+                        id="mainTopicInput" 
+                        class="topic-input" 
+                        placeholder="예: 2024년 반도체 시장 전망"
+                    >
+                    <div class="input-description">
+                        리포트의 전체 주제를 한 문장으로 작성하면, 분석 구조가 더 명확해집니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtopics Section -->
+            <div class="subtopics-section">
+                <div class="subtopics-header">
+                    <h3 class="subtopics-title">소주제 설정</h3>
+                    <button class="add-subtopic-button" id="addSubtopicBtn">소주제 추가</button>
+                </div>
+                <div class="subtopics-list" id="subtopicsList">
+                    <!-- Subtopics will be added here dynamically -->
+                </div>
+                <div class="input-description">
+                    주요 소주제를 설정하면, AI가 각 항목별로 뉴스와 데이터를 분리 분석합니다.
+                </div>
+            </div>
+
+            <!-- Recommended Subtopics -->
+            <div class="recommended-section">
+                <h3 class="recommended-title">추천 소주제 예시</h3>
+                <div class="recommended-grid">
+                    <div class="recommended-item">글로벌 시장 성장률</div>
+                    <div class="recommended-item">주요 플레이어 경쟁 구도</div>
+                    <div class="recommended-item">정책·규제 변화</div>
+                    <div class="recommended-item">원자재 가격 영향</div>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <h3 class="help-title">보조 안내</h3>
+                <ul class="help-list">
+                    <li class="help-item">소주제는 최대 10개까지 추가 가능</li>
+                    <li class="help-item">설정한 항목은 드래그로 순서 변경 가능</li>
+                    <li class="help-item">중복 입력 시 자동 합쳐집니다</li>
+                </ul>
+            </div>
+
+            <!-- Next Step Section -->
+            <div class="next-step-section">
+                <button class="next-step-button" id="nextStepButton" disabled>
+                    다음 단계로
+                </button>
+                <div class="next-step-description">
+                    주제와 소주제를 확정하면, AI가 각 항목별 분석과 시각화를 준비합니다.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const mainTopicInput = document.getElementById('mainTopicInput');
+        const addSubtopicBtn = document.getElementById('addSubtopicBtn');
+        const subtopicsList = document.getElementById('subtopicsList');
+        const nextStepButton = document.getElementById('nextStepButton');
+        const keywordsSummary = document.getElementById('keywordsSummary');
+
+        let subtopicCount = 0;
+        const maxSubtopics = 10;
+
+        // Load keywords from previous step
+        window.addEventListener('load', function() {
+            const keywords = localStorage.getItem('reportKeywords');
+            if (keywords) {
+                keywordsSummary.textContent = keywords;
+            } else {
+                keywordsSummary.textContent = '키워드 정보를 찾을 수 없습니다.';
+            }
+
+            // Load draft data
+            const draftTopic = localStorage.getItem('draftMainTopic');
+            if (draftTopic) {
+                mainTopicInput.value = draftTopic;
+            }
+
+            const draftSubtopics = JSON.parse(localStorage.getItem('draftSubtopics') || '[]');
+            draftSubtopics.forEach(subtopic => {
+                addSubtopicItem(subtopic);
+            });
+
+            validateForm();
+        });
+
+        // Add subtopic item
+        function addSubtopicItem(value = '') {
+            if (subtopicCount >= maxSubtopics) {
+                alert('소주제는 최대 10개까지 추가할 수 있습니다.');
+                return;
+            }
+
+            const subtopicItem = document.createElement('div');
+            subtopicItem.className = 'subtopic-item';
+            subtopicItem.innerHTML = `
+                <span class="drag-handle">⋮⋮</span>
+                <input type="text" class="subtopic-input" placeholder="예: AI 반도체 수요, 주요 기업별 점유율, 공급망 이슈" value="${value}">
+                <button class="remove-subtopic" onclick="removeSubtopic(this)">×</button>
+            `;
+
+            subtopicsList.appendChild(subtopicItem);
+            subtopicCount++;
+
+            // Focus on new input
+            const newInput = subtopicItem.querySelector('.subtopic-input');
+            newInput.focus();
+
+            // Add event listener for validation
+            newInput.addEventListener('input', validateForm);
+        }
+
+        // Remove subtopic item
+        function removeSubtopic(button) {
+            button.closest('.subtopic-item').remove();
+            subtopicCount--;
+            validateForm();
+        }
+
+        // Add subtopic button handler
+        addSubtopicBtn.addEventListener('click', function() {
+            addSubtopicItem();
+        });
+
+        // Recommended item click handler
+        document.querySelectorAll('.recommended-item').forEach(item => {
+            item.addEventListener('click', function() {
+                addSubtopicItem(this.textContent);
+            });
+        });
+
+        // Form validation
+        function validateForm() {
+            const mainTopic = mainTopicInput.value.trim();
+            const subtopics = Array.from(document.querySelectorAll('.subtopic-input'))
+                .map(input => input.value.trim())
+                .filter(value => value.length > 0);
+
+            const isValid = mainTopic.length > 0 && subtopics.length > 0;
+            
+            nextStepButton.disabled = !isValid;
+            
+            if (isValid) {
+                nextStepButton.style.opacity = '1';
+            } else {
+                nextStepButton.style.opacity = '0.6';
+            }
+        }
+
+        // Input event listeners
+        mainTopicInput.addEventListener('input', validateForm);
+
+        // Next step button handler
+        nextStepButton.addEventListener('click', function() {
+            if (this.disabled) return;
+            
+            const mainTopic = mainTopicInput.value.trim();
+            const subtopics = Array.from(document.querySelectorAll('.subtopic-input'))
+                .map(input => input.value.trim())
+                .filter(value => value.length > 0);
+            
+            // Store data
+            localStorage.setItem('reportMainTopic', mainTopic);
+            localStorage.setItem('reportSubtopics', JSON.stringify(subtopics));
+            
+            // Simulate processing
+            this.textContent = '처리 중...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = 'ui_14.html';
+            }, 1500);
+        });
+
+        // Auto-save functionality
+        mainTopicInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value) {
+                localStorage.setItem('draftMainTopic', value);
+            }
+        });
+
+        // Auto-save subtopics
+        subtopicsList.addEventListener('blur', function(e) {
+            if (e.target.classList.contains('subtopic-input')) {
+                const subtopics = Array.from(document.querySelectorAll('.subtopic-input'))
+                    .map(input => input.value.trim())
+                    .filter(value => value.length > 0);
+                localStorage.setItem('draftSubtopics', JSON.stringify(subtopics));
+            }
+        }, true);
+
+        // Simple drag and drop (visual feedback only)
+        let draggedItem = null;
+
+        subtopicsList.addEventListener('mousedown', function(e) {
+            if (e.target.classList.contains('drag-handle')) {
+                draggedItem = e.target.closest('.subtopic-item');
+                draggedItem.style.opacity = '0.5';
+            }
+        });
+
+        subtopicsList.addEventListener('mouseup', function() {
+            if (draggedItem) {
+                draggedItem.style.opacity = '1';
+                draggedItem = null;
+            }
+        });
+
+        // Prevent form submission on Enter
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.classList.contains('subtopic-input')) {
+                e.preventDefault();
+                addSubtopicItem();
+            }
+        });
+    </script>
+</body>
+</html>

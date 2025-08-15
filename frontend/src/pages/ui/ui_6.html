@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - ThinkWise AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Primary Colors - Gold Theme */
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+
+            /* Background Colors - Dark Theme */
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+
+            /* Text Colors */
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+
+            /* Border Colors */
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-dark: #5A5A5A;
+
+            /* Spacing */
+            --spacing-1: 0.25rem;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-6: 1.5rem;
+            --spacing-8: 2rem;
+            --spacing-12: 3rem;
+            --spacing-16: 4rem;
+
+            /* Border Radius */
+            --border-radius-sm: 0.375rem;
+            --border-radius-base: 0.5rem;
+            --border-radius-md: 0.75rem;
+            --border-radius-lg: 1rem;
+            --border-radius-xl: 1.5rem;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-4) 0;
+        }
+
+        .header-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: var(--spacing-8);
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.25s ease-in-out;
+        }
+
+        .nav-menu a:hover {
+            color: var(--color-primary-500);
+        }
+
+        /* Login Container */
+        .login-container {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-12);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .login-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .login-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .login-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: var(--spacing-6);
+        }
+
+        .form-label {
+            display: block;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            margin-bottom: var(--spacing-2);
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-4);
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+            border-radius: var(--border-radius-base);
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary-500);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: var(--spacing-4);
+            border-radius: var(--border-radius-base);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease-in-out;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-primary-500);
+            border: 2px solid var(--color-primary-500);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-primary-900);
+            border-color: var(--color-primary-600);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Links */
+        .form-links {
+            text-align: center;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .form-link {
+            color: var(--color-primary-500);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.25s ease-in-out;
+        }
+
+        .form-link:hover {
+            color: var(--color-primary-400);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: var(--spacing-6) 0;
+            color: var(--color-text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--color-border-medium);
+        }
+
+        .divider span {
+            padding: 0 var(--spacing-4);
+        }
+
+        /* Social Login */
+        .social-login {
+            margin-bottom: var(--spacing-6);
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+            border-radius: var(--border-radius-base);
+            color: var(--color-text-primary);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .social-btn:hover {
+            background: var(--color-background-primary);
+            border-color: var(--color-primary-500);
+            transform: translateY(-1px);
+        }
+
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Signup Link */
+        .signup-link {
+            text-align: center;
+            margin-top: var(--spacing-6);
+            padding-top: var(--spacing-6);
+            border-top: 1px solid var(--color-border-light);
+        }
+
+        .signup-text {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .signup-link a {
+            color: var(--color-primary-500);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            color: var(--color-primary-400);
+        }
+
+        /* Security Notice */
+        .security-notice {
+            text-align: center;
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: var(--color-background-tertiary);
+            border-radius: var(--border-radius-base);
+        }
+
+        .security-text {
+            color: var(--color-text-tertiary);
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: var(--spacing-4);
+            }
+
+            .nav-menu {
+                gap: var(--spacing-4);
+            }
+
+            .login-container {
+                margin: var(--spacing-8) var(--spacing-4);
+                padding: var(--spacing-8);
+            }
+
+            .login-logo {
+                font-size: 1.75rem;
+            }
+
+            .login-title {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700), var(--color-primary-900), var(--color-primary-500));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        /* Loading State */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid var(--color-primary-500);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">ThinkWise</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">제품</a></li>
+                    <li><a href="#">가격</a></li>
+                    <li><a href="#">커뮤니티</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-logo gradient-text">ThinkWise</div>
+            <h1 class="login-title">ThinkWise AI 로그인</h1>
+            <p class="login-subtitle">데이터 기반 인사이트, 지금 바로 시작하세요.</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email" class="form-label">이메일 주소</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-input" 
+                    placeholder="이메일을 입력하세요"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">비밀번호</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="form-input" 
+                    placeholder="비밀번호를 입력하세요"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="loginBtn">
+                로그인
+            </button>
+
+            <div class="form-links">
+                <a href="#" class="form-link">비밀번호를 잊으셨나요?</a>
+            </div>
+        </form>
+
+        <div class="divider">
+            <span>간편 로그인</span>
+        </div>
+
+        <div class="social-login">
+            <a href="#" class="social-btn">
+                <div class="social-icon">🔍</div>
+                Google로 로그인
+            </a>
+            <a href="#" class="social-btn">
+                <div class="social-icon">🟢</div>
+                Naver로 로그인
+            </a>
+            <a href="#" class="social-btn">
+                <div class="social-icon">🟡</div>
+                Kakao로 로그인
+            </a>
+        </div>
+
+        <div class="signup-link">
+            <p class="signup-text">
+                아직 계정이 없으신가요? <a href="#">무료로 가입하기</a>
+            </p>
+        </div>
+
+        <div class="security-notice">
+            <p class="security-text">
+                로그인 시, 개인정보처리방침 및 이용약관에 동의하게 됩니다.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            // Add loading state
+            loginBtn.classList.add('loading');
+            loginBtn.textContent = '로그인 중...';
+            
+            // Simulate login process
+            setTimeout(() => {
+                // Remove loading state
+                loginBtn.classList.remove('loading');
+                loginBtn.textContent = '로그인';
+                
+                // Here you would typically send the data to your backend
+                console.log('Login attempt:', { email, password });
+                
+                // For demo purposes, show success
+                alert('로그인이 완료되었습니다!');
+            }, 2000);
+        });
+
+        // Add focus effects to inputs
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add hover effects to social buttons
+        document.querySelectorAll('.social-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ThinkWise Login page loaded');
+        });
+    </script>
+</body>
+</html>
