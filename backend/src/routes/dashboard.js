@@ -22,6 +22,9 @@ router.get('/categories', dashboardController.getCategoryDistribution);
 // Get industry distribution
 router.get('/industries', dashboardController.getIndustryDistribution);
 
+// Sector performance (ETF proxy)
+router.get('/sectors', dashboardController.getSectorPerformance);
+
 // Get recent reports
 router.get('/recent-reports', dashboardController.getRecentReports);
 

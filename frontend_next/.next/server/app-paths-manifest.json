@@ -1,0 +1,9 @@
+{
+  "/page": "app/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/community/page": "app/community/page.js",
+  "/reports/history/page": "app/reports/history/page.js",
+  "/guide/page": "app/guide/page.js",
+  "/analysis/page": "app/analysis/page.js",
+  "/api/analysis/stock/route": "app/api/analysis/stock/route.js"
+}

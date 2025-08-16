@@ -3,16 +3,16 @@ const logger = require('../utils/logger');
 
 const connectDB = async () => {
   try {
+    if (process.env.SKIP_DB === 'true') {
+      logger.warn('Skipping MongoDB connection due to SKIP_DB=true')
+      return
+    }
     const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/thinkiwise';
     
     const options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-      bufferCommands: false,
-      bufferMaxEntries: 0
+      socketTimeoutMS: 45000
     };
 
     const conn = await mongoose.connect(mongoURI, options);
@@ -41,6 +41,10 @@ const connectDB = async () => {
     
   } catch (error) {
     logger.error('MongoDB connection failed:', error);
+    if (process.env.ALLOW_START_WITHOUT_DB === 'true') {
+      logger.warn('Continuing without DB because ALLOW_START_WITHOUT_DB=true')
+      return
+    }
     process.exit(1);
   }
 };

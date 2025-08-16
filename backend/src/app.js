@@ -7,6 +7,12 @@ const dashboardRoutes = require('./routes/dashboard');
 const chatRoutes = require('./routes/chat');
 const reportRoutes = require('./routes/report');
 const settingsRoutes = require('./routes/settings');
+const newsRoutes = require('./routes/news');
+const financeRoutes = require('./routes/finance');
+const macroRoutes = require('./routes/macro');
+const marketRoutes = require('./routes/market');
+const analysisRoutes = require('./routes/analysis');
+const communityRoutes = require('./routes/community');
 
 const app = express();
 
@@ -25,6 +31,12 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/report', reportRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/finance', financeRoutes);
+app.use('/api/macro', macroRoutes);
+app.use('/api/market', marketRoutes);
+app.use('/api/analysis', analysisRoutes);
+app.use('/api/community', communityRoutes);
 
 // API Documentation route
 app.get('/api', (req, res) => {

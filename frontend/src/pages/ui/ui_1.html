@@ -189,6 +189,10 @@
             --transition-fast: 150ms ease-in-out;
             --transition-base: 250ms ease-in-out;
             --transition-slow: 350ms ease-in-out;
+            /* Sidebar sizes */
+            --sidebar-width-collapsed: 72px;
+            --sidebar-width-expanded: 280px;
+            --header-height: 56px;
         }
 
         * {
@@ -205,27 +209,98 @@
             overflow-x: hidden;
         }
 
+        /* Top Header (제품/가격/커뮤니티 복원) */
+        .header {
+            background: var(--color-background-secondary);
+            padding: var(--spacing-4) 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            min-height: var(--header-height);
+        }
+        .header-container {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-4);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            height: var(--header-height);
+        }
+        .header-right { margin-left: auto; display: flex; align-items: center; gap: var(--spacing-8); }
+        .header-center { flex: 1; display: flex; justify-content: center; }
+        .header .logo {
+            font-weight: var(--font-weight-bold);
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        .nav-menu.header-nav {
+            display: flex;
+            gap: var(--spacing-6);
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-menu.header-nav a { color: var(--color-text-secondary); text-decoration: none; font-weight: var(--font-weight-medium); transition: color var(--transition-base); font-size: 0.95rem; }
+        .nav-menu.header-nav a:hover, .nav-menu.header-nav a.active { color: var(--color-primary-500); }
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-4);
+            align-items: center;
+        }
+        .btn { padding: var(--spacing-2) var(--spacing-5); border-radius: var(--border-radius-base); font-weight: 500; text-decoration: none; border: none; cursor: pointer; font-size: 0.85rem; }
+        .btn-secondary { background: transparent; color: var(--color-primary-500); border: 2px solid var(--color-primary-500); }
+        .btn-primary { background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700)); color: var(--color-background-primary); box-shadow: var(--shadow-base); }
+
         /* Layout */
         .app-container {
             display: flex;
             min-height: 100vh;
+            margin-left: var(--sidebar-width-collapsed);
+            transition: margin-left var(--transition-base);
         }
 
         /* Sidebar */
         .sidebar {
-            width: 280px;
+            width: var(--sidebar-width-collapsed);
             background-color: var(--color-background-secondary);
             border-right: 1px solid var(--color-border-light);
-            padding: var(--spacing-6);
+            padding: var(--spacing-6) var(--spacing-3);
             display: flex;
             flex-direction: column;
             position: fixed;
-            height: 100vh;
-            z-index: 1000;
+            height: calc(100vh - var(--header-height));
+            z-index: 1100;
+            left: 0;
+            top: var(--header-height);
+            transition: width var(--transition-base), transform var(--transition-base);
+        }
+
+        .sidebar.expanded {
+            width: var(--sidebar-width-expanded);
+            padding: var(--spacing-6);
         }
 
         .sidebar-header {
             margin-bottom: var(--spacing-8);
+        }
+
+        .sidebar-top { display: flex; align-items: center; gap: var(--spacing-3); }
+        .sidebar-toggle {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            color: var(--color-text-inverse);
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(255, 215, 0, 0.25);
         }
 
         .logo {
@@ -237,6 +312,9 @@
             align-items: center;
             gap: var(--spacing-2);
         }
+
+        .label { opacity: 0; width: 0; overflow: hidden; transition: opacity var(--transition-base); }
+        .sidebar.expanded .label { opacity: 1; width: auto; }
 
         .logo-icon {
             width: 32px;
@@ -280,7 +358,7 @@
         .nav-link.active {
             background: linear-gradient(135deg, #FFD700, #FFA500);
             color: var(--color-text-inverse);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.25);
         }
 
         .nav-icon {
@@ -290,6 +368,18 @@
             align-items: center;
             justify-content: center;
         }
+
+        .divider { height: 1px; background: var(--color-border-light); margin: var(--spacing-4) 0; }
+
+        /* Collapsed state clean look */
+        .sidebar:not(.expanded) .nav-link { width: 44px; height: 44px; justify-content: center; gap: 0; padding: 0; }
+        .sidebar:not(.expanded) .conversation-section,
+        .sidebar:not(.expanded) .user-details,
+        .sidebar:not(.expanded) .section-title,
+        .sidebar:not(.expanded) .label { display: none; }
+        .sidebar:not(.expanded) .settings-link { justify-content: center; }
+
+        /* Expanded vs collapsed alignment */
 
         .conversation-section {
             margin-top: auto;
@@ -393,20 +483,21 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 280px;
             padding: var(--spacing-8);
             background: linear-gradient(135deg, var(--color-background-primary) 0%, var(--color-background-secondary) 100%);
         }
 
+        .app-container.sidebar-expanded { margin-left: var(--sidebar-width-expanded); }
+
         /* Hero Section */
         .hero-section {
             text-align: center;
-            margin-bottom: var(--spacing-16);
-            padding: var(--spacing-16) 0;
+            margin-bottom: var(--spacing-10);
+            padding: var(--spacing-12) 0;
         }
 
         .brand-name {
-            font-size: var(--font-size-6xl);
+            font-size: var(--font-size-5xl);
             font-weight: var(--font-weight-bold);
             background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
             background-size: 300% 300%;
@@ -415,22 +506,14 @@
             background-clip: text;
             margin-bottom: var(--spacing-6);
             letter-spacing: var(--letter-spacing-tight);
-            animation: gradientShift 3s ease-in-out infinite;
         }
 
-        @keyframes gradientShift {
-            0%, 100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-        }
+        /* 브랜드 텍스트의 동적 그라디언트 애니메이션 제거 */
 
         .sub-headline {
-            font-size: var(--font-size-xl);
+            font-size: var(--font-size-lg);
             color: var(--color-text-secondary);
-            margin-bottom: var(--spacing-12);
+            margin-bottom: var(--spacing-8);
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -439,8 +522,8 @@
 
         /* Search Section */
         .search-section {
-            max-width: 800px;
-            margin: 0 auto var(--spacing-16);
+            max-width: 760px;
+            margin: 0 auto var(--spacing-10);
         }
 
         .search-container {
@@ -448,7 +531,7 @@
             background-color: var(--color-background-secondary);
             border: 2px solid var(--color-border-medium);
             border-radius: var(--border-radius-2xl);
-            padding: var(--spacing-4);
+            padding: var(--spacing-3);
             display: flex;
             align-items: center;
             gap: var(--spacing-4);
@@ -489,19 +572,9 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-2);
-            animation: buttonGlow 2s ease-in-out infinite;
         }
 
-        @keyframes buttonGlow {
-            0%, 100% {
-                background-position: 0% 50%;
-                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            }
-            50% {
-                background-position: 100% 50%;
-                box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
-            }
-        }
+        /* 버튼의 동적 컬러 변화(글로우) 애니메이션 제거 */
 
         .search-button:hover {
             transform: translateY(-2px);
@@ -513,8 +586,16 @@
         }
 
         /* Economic Indicators */
-        .indicators-section {
-            margin-bottom: var(--spacing-16);
+        .indicators-section { margin-bottom: var(--spacing-16); }
+        .indicators-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto var(--spacing-4);
+            padding: 0 var(--spacing-4);
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
         }
 
         .section-header {
@@ -536,7 +617,7 @@
 
         .indicators-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: var(--spacing-6);
             max-width: 1200px;
             margin: 0 auto;
@@ -546,10 +627,11 @@
             background-color: var(--color-background-secondary);
             border: 1px solid var(--color-border-light);
             border-radius: var(--border-radius-xl);
-            padding: var(--spacing-6);
-            text-align: center;
+            padding: var(--spacing-5);
+            text-align: left;
             transition: var(--transition-base);
             box-shadow: var(--shadow-base);
+            min-height: 140px;
         }
 
         .indicator-card:hover {
@@ -564,22 +646,19 @@
             font-weight: var(--font-weight-semibold);
             color: var(--color-text-primary);
             margin-bottom: var(--spacing-3);
+            opacity: 0.8;
         }
 
         .indicator-value {
-            font-size: var(--font-size-3xl);
+            font-size: 2rem;
             font-weight: var(--font-weight-bold);
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--color-text-primary);
             margin-bottom: var(--spacing-2);
         }
 
         .indicator-change {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: var(--spacing-1);
             font-size: var(--font-size-sm);
             font-weight: var(--font-weight-medium);
@@ -603,15 +682,6 @@
 
         /* Responsive Design */
         @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: var(--transition-base);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
             .main-content {
                 margin-left: 0;
             }
@@ -740,69 +810,99 @@
     </style>
 </head>
 <body>
+    <!-- Top Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">ThinkWise</a>
+            <div class="header-center">
+                <nav>
+                    <ul class="nav-menu header-nav">
+                        <li><a href="#">제품</a></li>
+                        <li><a href="#" class="active">가격</a></li>
+                        <li><a href="#">커뮤니티</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="header-actions">
+                    <a href="#" class="btn btn-secondary">로그인</a>
+                    <a href="#" class="btn btn-primary">무료로 시작</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <a href="#" class="logo">
-                    <div class="logo-icon">TW</div>
-                    ThinkWise
-                </a>
-            </div>
+                <div class="sidebar-top">
+                    <button class="sidebar-toggle" id="sidebarToggle" title="사이드바 토글">≡</button>
+                    <a href="#" class="logo"><span class="label">ThinkWise</span></a>
+                </div>
 
             <nav>
                 <ul class="nav-menu">
                     <li class="nav-item">
                         <a href="#" class="nav-link active">
-                            <div class="nav-icon">🏠</div>
-                            홈
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <div class="nav-icon">🤖</div>
-                            AI 채팅
+                            <div class="nav-icon">💬</div>
+                            <span class="label">메시지</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <div class="nav-icon">📊</div>
-                            분석 대시보드
+                            <span class="label">대시보드</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <div class="nav-icon">🗂️</div>
+                            <span class="label">아카이브</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <div class="nav-icon">👥</div>
-                            커뮤니티
+                            <span class="label">커뮤니티</span>
                         </a>
                     </li>
                 </ul>
             </nav>
 
             <div class="conversation-section">
-                <h3 class="section-title">대화기록</h3>
+                <h3 class="section-title"><span class="label">대화기록</span></h3>
                 <ul class="conversation-list">
                     <li class="conversation-item">
-                        <a href="#" class="conversation-link">팔란티어 기업 분석</a>
+                        <a href="#" class="conversation-link"><span class="label">팔란티어 기업 분석</span></a>
                     </li>
                     <li class="conversation-item">
-                        <a href="#" class="conversation-link">데이터 분석 산업 동향</a>
+                        <a href="#" class="conversation-link"><span class="label">데이터 분석 산업 동향</span></a>
                     </li>
                 </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="bottom-actions" style="display:flex;flex-direction:column;gap:12px;align-items:center;margin-bottom:16px;">
+                <a href="#" class="settings-link" title="도움말" style="display:flex;align-items:center;gap:12px;">
+                    <div class="nav-icon">🛟</div>
+                    <span class="label">도움말</span>
+                </a>
+                <a href="#" class="settings-link" title="설정" style="display:flex;align-items:center;gap:12px;">
+                    <div class="nav-icon">⚙️</div>
+                    <span class="label">설정</span>
+                </a>
             </div>
 
             <div class="sidebar-footer">
                 <div class="user-info">
                     <div class="user-avatar">유</div>
                     <div class="user-details">
-                        <div class="user-name">유병욱</div>
-                        <div class="user-plan">Pro Plan</div>
+                        <div class="user-name"><span class="label">유병욱</span></div>
+                        <div class="user-plan"><span class="label">Pro Plan</span></div>
                     </div>
                 </div>
-                <a href="#" class="settings-link">
-                    <div class="nav-icon">⚙️</div>
-                    설정
-                </a>
             </div>
         </aside>
 
@@ -815,8 +915,8 @@
             </section>
 
             <!-- Search Section -->
-            <section class="search-section fade-in-up">
-                <div class="search-container">
+            <section class="search-section fade-in-up" style="margin-top: -24px;">
+                <div class="search-container" style="max-width: 760px;">
                     <input 
                         type="text" 
                         class="search-input" 
@@ -832,9 +932,9 @@
 
             <!-- Economic Indicators Section -->
             <section class="indicators-section fade-in-up">
-                <div class="section-header">
-                    <h2 class="section-title-large">실시간 거시경제 지표</h2>
-                    <p class="section-subtitle">최신 데이터 기준으로 업데이트됩니다</p>
+                <div class="indicators-header-row">
+                    <div>주요 거시경제 지표</div>
+                    <div>마지막 업데이트: 오후 5:36:58</div>
                 </div>
 
                 <div class="indicators-grid">
@@ -955,34 +1055,27 @@
             });
         });
 
-        // Mobile menu toggle (for responsive design)
-        function toggleMobileMenu() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('open');
+        // Sidebar toggle (desktop & mobile)
+        const sidebar = document.querySelector('.sidebar');
+        const appContainer = document.querySelector('.app-container');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        function applySidebarState(isExpanded) {
+            sidebar.classList.toggle('expanded', isExpanded);
+            appContainer.classList.toggle('sidebar-expanded', isExpanded);
+            localStorage.setItem('sidebarExpanded', isExpanded ? '1' : '0');
         }
 
-        // Add mobile menu button if needed
-        if (window.innerWidth <= 1024) {
-            const mobileMenuButton = document.createElement('button');
-            mobileMenuButton.innerHTML = '☰';
-            mobileMenuButton.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                z-index: 1001;
-                background: linear-gradient(135deg, #FFD700, #FFA500);
-                border: none;
-                border-radius: 50%;
-                width: 50px;
-                height: 50px;
-                color: white;
-                font-size: 20px;
-                cursor: pointer;
-                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            `;
-            mobileMenuButton.addEventListener('click', toggleMobileMenu);
-            document.body.appendChild(mobileMenuButton);
+        function toggleSidebar() {
+            const willExpand = !sidebar.classList.contains('expanded');
+            applySidebarState(willExpand);
         }
+
+        if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
+
+        // Initialize sidebar state (default: collapsed)
+        const savedState = localStorage.getItem('sidebarExpanded');
+        applySidebarState(savedState === '1');
     </script>
 </body>
 </html>
