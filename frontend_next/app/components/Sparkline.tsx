@@ -1,32 +1,26 @@
 "use client"
 import React from 'react'
 
-type Props = {
-  points: number[]
-  width?: number
-  height?: number
-  stroke?: string
-}
+type Props = { points: number[]; stroke?: string }
 
-export default function Sparkline({ points, width = 160, height = 48, stroke = '#22c55e' }: Props){
+export default function Sparkline({ points, stroke = '#22c55e' }: Props){
+  const width = 160
+  const height = 48
   if(points.length === 0){
-    return <svg width={width} height={height}></svg>
+    return <div className="text-zinc-500 text-xs">데이터 없음</div>
   }
-  const max = Math.max(...points)
   const min = Math.min(...points)
+  const max = Math.max(...points)
   const range = max - min || 1
-  const stepX = width / (points.length - 1)
-  const path = points.map((p, i) => {
-    const x = i * stepX
-    const y = height - ((p - min) / range) * height
-    return `${i === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`
+  const step = width / (points.length - 1)
+  const d = points.map((v,i)=>{
+    const x = i * step
+    const y = height - ((v - min) / range) * height
+    return `${i===0?'M':'L'}${x.toFixed(1)},${y.toFixed(1)}`
   }).join(' ')
-  const fillPath = `${path} L ${width} ${height} L 0 ${height} Z`
-  const fill = stroke === '#ef4444' ? 'rgba(239,68,68,0.08)' : 'rgba(34,197,94,0.08)'
   return (
-    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-      <path d={fillPath} fill={fill}></path>
-      <path d={path} fill="none" stroke={stroke} strokeWidth={2} />
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="block">
+      <path d={d} fill="none" stroke={stroke} strokeWidth={2} strokeLinecap="round" />
     </svg>
   )
 }

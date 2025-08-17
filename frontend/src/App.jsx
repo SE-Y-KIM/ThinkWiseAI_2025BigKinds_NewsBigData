@@ -13,6 +13,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import PricingPage from './pages/Pricing/PricingPage'
 import PostDetail from './pages/Community/PostDetail'
 import NewPost from './pages/Community/NewPost'
+import ProductPage from './pages/Product/ProductPage'
 
 function App() {
   return (
@@ -26,10 +27,11 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/analysis" element={<AnalysisPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/community" element={<ProtectedRoute><CommunityPage /></ProtectedRoute>} />
+            {/* 커뮤니티 메뉴 제거: 라우트는 유지하거나 필요 시 삭제 */}
             <Route path="/community/:id" element={<ProtectedRoute><PostDetail /></ProtectedRoute>} />
             <Route path="/community/new" element={<ProtectedRoute><NewPost /></ProtectedRoute>} />
             <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/product" element={<ProductPage />} />
           </Routes>
         </div>
       </AuthProvider>

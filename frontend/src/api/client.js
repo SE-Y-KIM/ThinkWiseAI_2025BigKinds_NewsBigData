@@ -1,4 +1,6 @@
-export const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5050/api'
+// 환경에 따라 자동으로 백엔드 호스트를 맞춥니다(127.0.0.1/localhost 모두 대응)
+const runtimeHost = (typeof window !== 'undefined' && window.location && window.location.hostname) ? window.location.hostname : 'localhost'
+export const API_BASE = import.meta.env.VITE_API_BASE || `http://${runtimeHost}:5050/api`
 
 function authHeader() {
   const token = localStorage.getItem('tw_token')

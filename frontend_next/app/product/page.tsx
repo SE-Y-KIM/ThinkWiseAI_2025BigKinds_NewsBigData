@@ -37,6 +37,16 @@ export default function ProductPage(){
             ))}
           </div>
         </section>
+
+        <section>
+          <h2 className="text-2xl font-bold text-center mb-6">빠른 사용 가이드</h2>
+          <ol className="space-y-3 max-w-3xl mx-auto text-zinc-300 list-decimal list-inside">
+            <li>메인에서 질문 입력 후 Enter 또는 분석 버튼 클릭</li>
+            <li>결과 카드에서 요약/핵심 키워드/뉴스 하이라이트 확인</li>
+            <li>대시보드에서 거시 지표·섹터 추이와 함께 비교</li>
+            <li>리포트 생성에서 PDF로 저장하거나 공유</li>
+          </ol>
+        </section>
       </div>
     </Layout>
   )

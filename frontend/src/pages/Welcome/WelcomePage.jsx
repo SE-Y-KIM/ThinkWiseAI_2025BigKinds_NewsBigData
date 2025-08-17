@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { apiGet } from '../../api/client'
+import MacroIndicators from '../../components/macro/MacroIndicators'
 import { useNavigate } from 'react-router-dom'
 
 const useKpi = () => {
@@ -60,21 +61,7 @@ const WelcomePage = () => {
         </div>
       </section>
 
-      <section style={{ maxWidth:1200, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', color:'#E0E0E0', fontSize:14, marginBottom:12, padding:'0 16px' }}>
-          <div>주요 거시경제 지표</div>
-          <div>마지막 업데이트: 오후 5:36:58</div>
-        </div>
-        {loading ? (
-          <div style={{ color:'#E0E0E0', padding:16 }}>불러오는 중…</div>
-        ) : (
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:24 }}>
-            {widgets.map((w) => (
-              <IndicatorCard key={w.key} name={w.name} value={w.value} change={`${Number(w.changePercent).toFixed(2)}%`} up={(w.changePercent||0) >= 0} />
-            ))}
-          </div>
-        )}
-      </section>
+      <MacroIndicators />
     </div>
   )
 }

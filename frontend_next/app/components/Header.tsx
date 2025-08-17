@@ -6,7 +6,8 @@ export default function Header(){
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
         <Link href="/" className="font-extrabold text-lg bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">ThinkWise</Link>
         <nav className="mx-auto flex gap-6 text-zinc-300">
-          <Link href="/guide" className="hover:text-yellow-400">가이드</Link>
+          <Link href="/dashboard" className="hover:text-yellow-400">대시보드</Link>
+          <Link href="/product" className="hover:text-yellow-400">제품</Link>
           <Link href="/pricing" className="hover:text-yellow-400">가격</Link>
         </nav>
         <div className="flex gap-2">
