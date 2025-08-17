@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { Line } from 'react-chartjs-2'
+import 'chart.js/auto'
 import { useLocation, useNavigate } from 'react-router-dom'
 import AppLayout from '../../components/layout/AppLayout'
 import { apiGet } from '../../api/client'
@@ -44,6 +46,72 @@ const Highlights = ({ news = [] }) => (
   </div>
 )
 
+// 차트 패널 - Chart.js 렌더링
+const ChartPanel = ({ chart }) => {
+  if (!chart || !Array.isArray(chart.labels)) return null
+  const data = {
+    labels: chart.labels,
+    datasets: (chart.series || []).map((s, idx) => ({
+      label: s.label || `Series ${idx+1}`,
+      data: s.data || [],
+      borderColor: ['#f59e0b', '#22c55e', '#3b82f6', '#ef4444'][idx % 4],
+      backgroundColor: 'transparent',
+      tension: 0.25,
+      borderWidth: 2
+    }))
+  }
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: { display: true, labels: { color: '#e5e7eb' } },
+      tooltip: { intersect:false, mode:'index' }
+    },
+    scales: {
+      x: { ticks: { color:'#9ca3af' }, grid: { color:'#27272a' } },
+      y: { ticks: { color:'#9ca3af' }, grid: { color:'#27272a' } }
+    }
+  }
+  return (
+    <div className="tw-card">
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
+        <div>
+          <div style={{ color:'#E0E0E0', fontWeight:800 }}>{chart.title || '데이터 시각화'}</div>
+          {chart.subtitle && <div style={{ color:'#9ca3af', fontSize:12 }}>{chart.subtitle}</div>}
+        </div>
+        <div style={{ color:'#9ca3af', fontSize:12 }}>업데이트: {chart.updatedAt || '-'}</div>
+      </div>
+      <Line data={data} options={options} height={80} />
+    </div>
+  )
+}
+
+// 하단 꼬리질문 바
+const FollowUpBar = ({ items = [], onPick }) => {
+  if (!items.length) return null
+  return (
+    <div style={{ position:'sticky', bottom:16, zIndex:1 }}>
+      <div style={{
+        background:'#1a1a1a',
+        border:'1px solid #3a3a3a',
+        borderRadius:12,
+        padding:'10px 12px',
+        boxShadow:'0 6px 18px rgba(0,0,0,.45)',
+        display:'flex',
+        flexWrap:'wrap',
+        gap:8,
+        alignItems:'center'
+      }}>
+        <span style={{ color:'#f59e0b', fontWeight:700, marginRight:6 }}>더 깊게 분석해볼까요?</span>
+        {items.slice(0,5).map((txt, i)=> (
+          <button key={i} className="tw-btn" style={{ background:'#27272a', border:'1px solid #3a3a3a', color:'#e5e7eb' }} onClick={()=> onPick && onPick(txt)}>
+            {txt}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const AnalysisContent = () => {
   const location = useLocation()
   const navigate = useNavigate()
@@ -82,6 +150,13 @@ const AnalysisContent = () => {
     return arr
   },[data])
 
+  const followUps = useMemo(()=>{
+    if (data?.ai?.followUps && data.ai.followUps.length) return data.ai.followUps
+    // 백엔드 미구현 시 키워드로 꼬리질문 생성
+    const kws = (data?.ai?.keywords || []).slice(0,3)
+    return kws.map(k=> `${k}의 향후 전망은?`)
+  },[data])
+
   return (
     <div style={{ display:'grid', gap:16 }}>
       <form onSubmit={onSubmit} style={{ display:'flex', gap:8 }}>
@@ -91,27 +166,36 @@ const AnalysisContent = () => {
       {loading && <div style={{ color:'#E0E0E0' }}>분석 중…</div>}
       {error && <div style={{ color:'#F44336' }}>{error}</div>}
       {data && (
-        <>
-          <InsightCard title="간단 인사이트" items={insights} />
-          <MarketCard market={data.market || []} />
-          <Highlights news={data.news || []} />
-          {data.ai && (
-            <div className="tw-card">
-              <div className="tw-gradient-text" style={{ fontWeight:800, marginBottom:8 }}>AI 요약</div>
-              <div style={{ color:'#E0E0E0', marginBottom:8 }}>{data.ai.summary || ''}</div>
-              {Array.isArray(data.ai.reasons) && data.ai.reasons.length>0 && (
-                <ul style={{ color:'#E0E0E0', margin:0, padding:'0 0 0 16px' }}>
-                  {data.ai.reasons.map((r,i)=>(<li key={i}>{r}</li>))}
-                </ul>
-              )}
-              {Array.isArray(data.ai.keywords) && (
-                <div style={{ marginTop:8 }}>
-                  {data.ai.keywords.map((k,i)=>(<span key={i} className="tw-chip" style={{ marginRight:6 }}>{k}</span>))}
+        <div className="tw-card" style={{ padding:0, border:'none', background:'transparent' }}>
+          {/* 상단: 리포트 생성 버튼 */}
+          <div style={{ display:'flex', justifyContent:'flex-end', marginBottom:8 }}>
+            <button className="tw-btn" style={{ border:'1px solid #f59e0b', color:'#f59e0b', background:'transparent' }}>리포트 생성</button>
+          </div>
+          {/* 3분할 레이아웃 */}
+          <div style={{ display:'grid', gridTemplateColumns:'2fr 1.5fr', gap:16 }}>
+            <div style={{ display:'grid', gap:16 }}>
+              <ChartPanel chart={data.chart} />
+              <Highlights news={data.news || []} />
+            </div>
+            <div style={{ display:'grid', gap:16 }}>
+              <InsightCard title="간단 인사이트" items={insights} />
+              {data.ai && (
+                <div className="tw-card">
+                  <div className="tw-gradient-text" style={{ fontWeight:800, marginBottom:8 }}>AI 요약</div>
+                  <div style={{ color:'#E0E0E0', marginBottom:8 }}>{data.ai.summary || ''}</div>
+                  {Array.isArray(data.ai.reasons) && data.ai.reasons.length>0 && (
+                    <ul style={{ color:'#E0E0E0', margin:0, padding:'0 0 0 16px' }}>
+                      {data.ai.reasons.map((r,i)=>(<li key={i}>{r}</li>))}
+                    </ul>
+                  )}
+                  {/* AI 카드 내부 꼬리질문은 최소화하고 하단 바에서 강조 */}
                 </div>
               )}
             </div>
-          )}
-        </>
+          </div>
+          {/* 하단 고정 꼬리질문 바 */}
+          <FollowUpBar items={followUps} onPick={(fu)=>{ setQ(fu); navigate(`/analysis?q=${encodeURIComponent(fu)}`) }} />
+        </div>
       )}
     </div>
   )
