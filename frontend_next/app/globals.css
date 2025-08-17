@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{ color-scheme: dark; --sidebar-width: 4rem; }
+body{ @apply bg-black text-white; }
+.tw-btn{ @apply px-3 py-2 rounded-lg font-bold text-sm; }
+.tw-btn-primary{ @apply bg-gradient-to-r from-yellow-400 to-orange-500 text-black; }
+.tw-card{ @apply bg-zinc-800 border border-zinc-700 rounded-xl p-4; }
+.tw-chip{ @apply inline-block bg-zinc-800 border border-zinc-700 rounded-full px-2 py-0.5 text-xs text-zinc-200; }
+
+.content-with-sidebar{ padding-left: var(--sidebar-width); transition: padding-left 200ms ease; }
+
+

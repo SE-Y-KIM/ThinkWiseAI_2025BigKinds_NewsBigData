@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkiWise - Sitemap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #212121;
+            background: #FAFAFA;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            color: #00CFFF;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #616161;
+            font-size: 1.125rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00CFFF;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #616161;
+            font-size: 0.875rem;
+        }
+        
+        .pages-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #00CFFF;
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .page-list {
+            list-style: none;
+        }
+        
+        .page-item {
+            border-bottom: 1px solid #E0E0E0;
+            padding: 1.5rem;
+        }
+        
+        .page-item:last-child {
+            border-bottom: none;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .page-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #212121;
+        }
+        
+        .page-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-active {
+            background: #E8F5E8;
+            color: #4CAF50;
+        }
+        
+        .status-pending {
+            background: #FFF8E1;
+            color: #FFC107;
+        }
+        
+        .page-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .detail-item {
+            font-size: 0.875rem;
+        }
+        
+        .detail-label {
+            color: #616161;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-value {
+            color: #212121;
+        }
+        
+        .page-links {
+            margin-top: 1rem;
+        }
+        
+        .links-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #616161;
+            margin-bottom: 0.5rem;
+        }
+        
+        .links-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .link-item {
+            background: #F5F5F5;
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            color: #616161;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: #616161;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .page-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ThinkiWise Sitemap</h1>
+            <p>프로젝트 페이지 관리 및 링크 구조 가이드</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-pages">0</div>
+                <div class="stat-label">전체 페이지</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="active-pages">0</div>
+                <div class="stat-label">활성 페이지</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pending-pages">0</div>
+                <div class="stat-label">대기 페이지</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completion-rate">0%</div>
+                <div class="stat-label">완성도</div>
+            </div>
+        </div>
+        
+        <div class="pages-section">
+            <div class="section-header">
+                페이지 목록
+            </div>
+            <ul class="page-list" id="page-list">
+                <!-- 페이지 목록이 여기에 동적으로 추가됩니다 -->
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>마지막 업데이트: <span id="last-updated">2024-01-01</span></p>
+            <p>ThinkiWise Design System v1.0.0</p>
+        </div>
+    </div>
+
+    <script>
+        // 페이지 데이터
+        const pages = [
+            {
+                id: 1,
+                name: "홈페이지",
+                filename: "ui_1.html",
+                path: "src/pages/ui/ui_1.html",
+                status: "active",
+                created: "2024-01-01",
+                description: "랜딩페이지 카피 기반 홈페이지 (다크 테마, 골드 액센트)",
+                links: [
+                    { text: "AI 채팅", href: "/chat", type: "internal" },
+                    { text: "분석 대시보드", href: "/dashboard", type: "internal" },
+                    { text: "커뮤니티", href: "/community", type: "internal" },
+                    { text: "설정", href: "/settings", type: "internal" }
+                ]
+            },
+            {
+                id: 2,
+                name: "AI 채팅 페이지",
+                filename: "ui_2.html",
+                path: "src/pages/ui/ui_2.html",
+                status: "pending",
+                created: "2024-01-01",
+                description: "AI와의 대화형 분석 인터페이스",
+                links: [
+                    { text: "홈", href: "/", type: "internal" },
+                    { text: "대화 기록", href: "#history", type: "anchor" },
+                    { text: "설정", href: "/settings", type: "internal" }
+                ]
+            },
+            {
+                id: 3,
+                name: "분석 대시보드",
+                filename: "ui_3.html",
+                path: "src/pages/ui/ui_3.html",
+                status: "pending",
+                created: "2024-01-01",
+                description: "실시간 거시경제 지표 및 분석 데이터 시각화",
+                links: [
+                    { text: "홈", href: "/", type: "internal" },
+                    { text: "리포트 생성", href: "/report", type: "internal" },
+                    { text: "설정", href: "/settings", type: "internal" }
+                ]
+            },
+            {
+                id: 4,
+                name: "커뮤니티",
+                filename: "ui_4.html",
+                path: "src/pages/ui/ui_4.html",
+                status: "pending",
+                created: "2024-01-01",
+                description: "사용자 커뮤니티 및 지식 공유 플랫폼",
+                links: [
+                    { text: "홈", href: "/", type: "internal" },
+                    { text: "포럼", href: "#forum", type: "anchor" },
+                    { text: "설정", href: "/settings", type: "internal" }
+                ]
+            },
+            {
+                id: 5,
+                name: "설정 페이지",
+                filename: "ui_5.html",
+                path: "src/pages/ui/ui_5.html",
+                status: "pending",
+                created: "2024-01-01",
+                description: "사용자 계정 및 앱 설정 관리",
+                links: [
+                    { text: "홈", href: "/", type: "internal" },
+                    { text: "프로필", href: "#profile", type: "anchor" },
+                    { text: "알림", href: "#notifications", type: "anchor" }
+                ]
+            }
+        ];
+
+        // 통계 계산
+        function updateStats() {
+            const total = pages.length;
+            const active = pages.filter(page => page.status === 'active').length;
+            const pending = pages.filter(page => page.status === 'pending').length;
+            const completionRate = total > 0 ? Math.round((active / total) * 100) : 0;
+
+            document.getElementById('total-pages').textContent = total;
+            document.getElementById('active-pages').textContent = active;
+            document.getElementById('pending-pages').textContent = pending;
+            document.getElementById('completion-rate').textContent = completionRate + '%';
+        }
+
+        // 페이지 목록 렌더링
+        function renderPages() {
+            const pageList = document.getElementById('page-list');
+            pageList.innerHTML = '';
+
+            pages.forEach(page => {
+                const pageItem = document.createElement('li');
+                pageItem.className = 'page-item';
+
+                const linksHtml = page.links.map(link => 
+                    `<span class="link-item">${link.text}</span>`
+                ).join('');
+
+                pageItem.innerHTML = `
+                    <div class="page-header">
+                        <div class="page-title">${page.name}</div>
+                        <div class="page-status status-${page.status}">${page.status}</div>
+                    </div>
+                    <div class="page-details">
+                        <div class="detail-item">
+                            <div class="detail-label">파일명</div>
+                            <div class="detail-value">${page.filename}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">경로</div>
+                            <div class="detail-value">${page.path}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">생성일</div>
+                            <div class="detail-value">${page.created}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">설명</div>
+                            <div class="detail-value">${page.description}</div>
+                        </div>
+                    </div>
+                    <div class="page-links">
+                        <div class="links-title">내부 링크</div>
+                        <ul class="links-list">
+                            ${linksHtml}
+                        </ul>
+                    </div>
+                `;
+
+                pageList.appendChild(pageItem);
+            });
+        }
+
+        // 초기화
+        function init() {
+            updateStats();
+            renderPages();
+            document.getElementById('last-updated').textContent = new Date().toLocaleDateString('ko-KR');
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
+

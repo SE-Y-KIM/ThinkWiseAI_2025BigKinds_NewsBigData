@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkWise AI - 대시보드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+            
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+            
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+            
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-focus: #FFD700;
+            
+            --font-family-primary: 'Montserrat', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .user-plan {
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .kpi-card {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+            background: linear-gradient(135deg, var(--color-background-secondary), rgba(255, 215, 0, 0.05));
+        }
+
+        .kpi-title {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .kpi-description {
+            font-size: 0.9rem;
+            color: var(--color-text-tertiary);
+        }
+
+        .kpi-update {
+            font-size: 0.8rem;
+            color: var(--color-primary-500);
+            margin-top: var(--spacing-sm);
+            font-style: italic;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--spacing-2xl);
+        }
+
+        /* Trending Topics */
+        .trending-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        .trending-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .trending-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-md);
+            transition: all 0.3s ease;
+        }
+
+        .trending-item:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.05));
+        }
+
+        .trending-info {
+            flex: 1;
+        }
+
+        .trending-topic {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .trending-stats {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        .trending-change {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .trending-change.positive {
+            color: #4CAF50;
+        }
+
+        .trending-change.negative {
+            color: #F44336;
+        }
+
+        /* Category Distribution */
+        .category-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-md);
+            transition: all 0.3s ease;
+        }
+
+        .category-item:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.05));
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .category-count {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        .category-percentage {
+            font-weight: 600;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* AI Recommendation */
+        .ai-recommendation {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .recommendation-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .recommendation-text {
+            flex: 1;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .recommendation-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            color: var(--color-background-primary);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            white-space: nowrap;
+        }
+
+        .recommendation-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Trust Message */
+        .trust-message {
+            text-align: center;
+            margin-top: var(--spacing-2xl);
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.03), rgba(255, 165, 0, 0.03));
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .trust-text {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .dashboard-container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendation-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                display: none;
+            }
+
+            .dashboard-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="ui_1.html" class="brand">
+                <span class="logo-icon">🧠</span>
+                <span class="brand-name">ThinkWise</span>
+            </a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-name">김사용자</div>
+                    <div class="user-plan">Pro 플랜</div>
+                </div>
+                <div class="user-avatar">김</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">뉴스 분석 대시보드</h1>
+                <p class="dashboard-subtitle">실시간 뉴스 데이터 분석 및 트렌드 인사이트</p>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">총 뉴스 기사</div>
+                    <div class="kpi-value">8,146</div>
+                    <div class="kpi-description">분석 가능한 전체 뉴스 기사 수</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">분석된 토픽</div>
+                    <div class="kpi-value">245</div>
+                    <div class="kpi-description">AI가 분류·분석한 주요 주제 수</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">분석 정확도</div>
+                    <div class="kpi-value">89%</div>
+                    <div class="kpi-description">최근 한 달 기준 AI 분석 정확도</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">실시간 업데이트</div>
+                    <div class="kpi-value">활성</div>
+                    <div class="kpi-description">새로운 뉴스와 지표가 자동 반영됩니다.</div>
+                    <div class="kpi-update">마지막 업데이트: 2분 전</div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Trending Topics -->
+                <div class="trending-section">
+                    <h2 class="section-title">트렌딩 토픽</h2>
+                    <div class="trending-list">
+                        <div class="trending-item">
+                            <div class="trending-info">
+                                <div class="trending-topic">인공지능 혁신</div>
+                                <div class="trending-stats">1,247 기사</div>
+                            </div>
+                            <div class="trending-change positive">▲23.5%</div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-info">
+                                <div class="trending-topic">빅데이터 분석</div>
+                                <div class="trending-stats">892 기사</div>
+                            </div>
+                            <div class="trending-change positive">▲15.1%</div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-info">
+                                <div class="trending-topic">해커톤 문화</div>
+                                <div class="trending-stats">634 기사</div>
+                            </div>
+                            <div class="trending-change positive">▲45.8%</div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-info">
+                                <div class="trending-topic">클라우드 컴퓨팅</div>
+                                <div class="trending-stats">523 기사</div>
+                            </div>
+                            <div class="trending-change negative">▼5.3%</div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-info">
+                                <div class="trending-topic">사이버보안</div>
+                                <div class="trending-stats">486 기사</div>
+                            </div>
+                            <div class="trending-change negative">▼12.7%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Distribution -->
+                <div class="category-section">
+                    <h2 class="section-title">카테고리별 분포</h2>
+                    <div class="category-list">
+                        <div class="category-item">
+                            <div class="category-name">기술</div>
+                            <div class="category-count">2,847건 <span class="category-percentage">(35%)</span></div>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-name">경제</div>
+                            <div class="category-count">2,284건 <span class="category-percentage">(28%)</span></div>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-name">사회</div>
+                            <div class="category-count">1,792건 <span class="category-percentage">(22%)</span></div>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-name">국제</div>
+                            <div class="category-count">1,223건 <span class="category-percentage">(15%)</span></div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--color-text-tertiary); margin-top: var(--spacing-md);">
+                        최근 한 달간 뉴스 카테고리별 분석 비율
+                    </p>
+                </div>
+            </div>
+
+            <!-- AI Recommendation -->
+            <div class="ai-recommendation">
+                <div class="recommendation-content">
+                    <div class="recommendation-text">
+                        최근 '인공지능 혁신' 산업에 관한 분석이 60% 증가했습니다. 사회에서 주목하고 있는 '인공지능 혁신'에 대한 심층 분석을 시작해보는 것은 어떨까요?
+                    </div>
+                    <button class="recommendation-button">'인공지능 혁신' 관련 뉴스 분석하기</button>
+                </div>
+            </div>
+
+            <!-- Trust Message -->
+            <div class="trust-message">
+                <p class="trust-text">데이터와 AI 분석으로 시장 변화를 선제적으로 파악하세요.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simulate real-time updates
+        function updateLastUpdate() {
+            const updateElement = document.querySelector('.kpi-update');
+            if (updateElement) {
+                const now = new Date();
+                const minutes = now.getMinutes();
+                updateElement.textContent = `마지막 업데이트: ${minutes}분 전`;
+            }
+        }
+
+        // Update every minute
+        setInterval(updateLastUpdate, 60000);
+
+        // Add click handlers for trending items
+        document.querySelectorAll('.trending-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const topic = this.querySelector('.trending-topic').textContent;
+                alert(`${topic} 관련 상세 분석 페이지로 이동합니다.`);
+            });
+        });
+
+        // Add click handler for recommendation button
+        document.querySelector('.recommendation-button').addEventListener('click', function() {
+            alert('인공지능 혁신 관련 뉴스 분석 페이지로 이동합니다.');
+        });
+
+        // Simulate data loading
+        window.addEventListener('load', function() {
+            // Add loading animation
+            const cards = document.querySelectorAll('.kpi-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+[33m[33mwarn[33m[39m: [33mSkipping MongoDB connection due to SKIP_DB=true[39m {"timestamp":"2025-08-17 15:13:22:1322"}
+(node:7357) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[32m[32minfo[32m[39m: [32m🚀 Server running in development mode on port 5050[39m {"timestamp":"2025-08-17 15:13:22:1322"}
+[32m[32minfo[32m[39m: [32m📊 Health check available at http://localhost:5050/health[39m {"timestamp":"2025-08-17 15:13:22:1322"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 15:13:22:1322"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 15:13:22:1322"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 15:13:22:1322"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 15:15:08:158"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 15:15:08:158"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 15:15:08:158"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 15:34:46:3446"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 15:34:46:3446"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 15:34:46:3446"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mSIGTERM received. Shutting down gracefully...\u001b[39m","timestamp":"2025-08-17 15:36:12:3612"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 15:36:13:3613"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 15:36:13:3613"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 15:36:13:3613"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 15:51:01:511"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 15:51:01:511"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 15:51:01:511"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mSIGTERM received. Shutting down gracefully...\u001b[39m","timestamp":"2025-08-17 15:52:54:5254"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 15:52:57:5257"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 15:52:57:5257"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 15:52:57:5257"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 16:00:31:031"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 16:00:31:031"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 16:00:31:031"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 16:03:17:317"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 16:03:17:317"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 16:03:17:317"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mSIGTERM received. Shutting down gracefully...\u001b[39m","timestamp":"2025-08-17 16:12:01:121"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 16:12:04:124"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 16:12:04:124"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 16:12:04:124"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 16:27:47:2747"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 16:27:47:2747"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 16:27:47:2747"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mSIGTERM received. Shutting down gracefully...\u001b[39m","timestamp":"2025-08-17 16:38:03:383"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 16:42:12:4212"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 16:42:12:4212"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 16:42:12:4212"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 17:26:13:2613"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 17:26:13:2613"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 17:26:13:2613"}
+{"level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mSkipping MongoDB connection due to SKIP_DB=true\u001b[39m","timestamp":"2025-08-17 17:28:05:285"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Server running in development mode on port 5050\u001b[39m","timestamp":"2025-08-17 17:28:05:285"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m📊 Health check available at http://localhost:5050/health\u001b[39m","timestamp":"2025-08-17 17:28:05:285"}

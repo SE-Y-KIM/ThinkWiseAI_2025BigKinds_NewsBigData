@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkWise AI - 리포트 생성 1단계</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+            
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+            
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+            
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-focus: #FFD700;
+            
+            --font-family-primary: 'Montserrat', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .user-plan {
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+        }
+
+        .step-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .progress-bar {
+            background: var(--color-background-tertiary);
+            border-radius: var(--border-radius-lg);
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            height: 100%;
+            width: 25%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .step-indicator {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .input-group {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .input-label {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.1rem;
+        }
+
+        .keyword-input {
+            width: 100%;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border-medium);
+            border-radius: var(--border-radius-md);
+            background: var(--color-background-tertiary);
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .keyword-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.02));
+        }
+
+        .keyword-input::placeholder {
+            color: var(--color-text-tertiary);
+            font-size: 1rem;
+        }
+
+        .input-description {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Sample Keywords */
+        .sample-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .sample-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        .sample-keywords {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .sample-keyword {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .sample-keyword:hover {
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-500);
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Help Section */
+        .help-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .help-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        .help-list {
+            list-style: none;
+        }
+
+        .help-item {
+            padding: var(--spacing-sm) 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .help-item::before {
+            content: '•';
+            color: var(--color-primary-500);
+            font-weight: bold;
+        }
+
+        /* Next Step Section */
+        .next-step-section {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .next-step-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            color: var(--color-background-primary);
+            border: none;
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            border-radius: var(--border-radius-md);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .next-step-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .next-step-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .next-step-description {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-top: var(--spacing-md);
+        }
+
+        /* Status Messages */
+        .status-message {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .status-text {
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .step-container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .input-section,
+            .sample-section,
+            .help-section {
+                padding: var(--spacing-lg);
+            }
+
+            .sample-keywords {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                display: none;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="ui_1.html" class="brand">
+                <span class="logo-icon">🧠</span>
+                <span class="brand-name">ThinkWise</span>
+            </a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-name">김사용자</div>
+                    <div class="user-plan">Pro 플랜</div>
+                </div>
+                <div class="user-avatar">김</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="step-container">
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>1단계: 키워드 설정</span>
+                    <span class="step-indicator">25% 완료</span>
+                </div>
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">리포트 생성 – 1단계: 키워드 설정</h1>
+                <p class="page-subtitle">분석할 주제의 핵심 키워드를 입력하세요. AI가 이를 기반으로 뉴스와 데이터를 수집합니다.</p>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="keywordInput" class="input-label">키워드 입력</label>
+                    <textarea 
+                        id="keywordInput" 
+                        class="keyword-input" 
+                        placeholder="예: 반도체 시장 전망, 전기차 배터리, 금리 인상 영향"
+                    ></textarea>
+                    <div class="input-description">
+                        명확한 키워드를 입력할수록 더 정교한 분석이 가능합니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sample Keywords -->
+            <div class="sample-section">
+                <h3 class="sample-title">AI가 제안하는 키워드를 참고하세요</h3>
+                <div class="sample-keywords">
+                    <div class="sample-keyword">AI 반도체 수요 폭발</div>
+                    <div class="sample-keyword">국제 유가 변동 원인</div>
+                    <div class="sample-keyword">친환경 에너지 정책 효과</div>
+                    <div class="sample-keyword">미국 금리 인상의 글로벌 영향</div>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <h3 class="help-title">보조 안내</h3>
+                <ul class="help-list">
+                    <li class="help-item">키워드는 1~5개까지 입력 가능</li>
+                    <li class="help-item">쉼표(,)로 구분해 입력하면 여러 키워드가 동시에 인식됩니다.</li>
+                    <li class="help-item">입력된 키워드는 자동 저장됩니다.</li>
+                </ul>
+            </div>
+
+            <!-- Status Message -->
+            <div class="status-message" id="statusMessage">
+                <div class="status-text">연관 뉴스와 데이터를 수집 중입니다...</div>
+            </div>
+
+            <!-- Next Step Section -->
+            <div class="next-step-section">
+                <button class="next-step-button" id="nextStepButton" disabled>
+                    다음 단계로
+                </button>
+                <div class="next-step-description">
+                    주제를 설정하면 세부 분석 범위를 선택할 수 있습니다.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const keywordInput = document.getElementById('keywordInput');
+        const nextStepButton = document.getElementById('nextStepButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Sample keyword click handlers
+        document.querySelectorAll('.sample-keyword').forEach(keyword => {
+            keyword.addEventListener('click', function() {
+                const currentValue = keywordInput.value;
+                const newKeyword = this.textContent;
+                
+                if (currentValue) {
+                    keywordInput.value = currentValue + ', ' + newKeyword;
+                } else {
+                    keywordInput.value = newKeyword;
+                }
+                
+                validateInput();
+            });
+        });
+
+        // Input validation
+        function validateInput() {
+            const value = keywordInput.value.trim();
+            const isValid = value.length > 0;
+            
+            nextStepButton.disabled = !isValid;
+            
+            if (isValid) {
+                nextStepButton.style.opacity = '1';
+            } else {
+                nextStepButton.style.opacity = '0.6';
+            }
+        }
+
+        // Input event listeners
+        keywordInput.addEventListener('input', function() {
+            validateInput();
+            
+            // Show status message when typing
+            if (this.value.trim()) {
+                statusMessage.style.display = 'block';
+            } else {
+                statusMessage.style.display = 'none';
+            }
+        });
+
+        // Next step button handler
+        nextStepButton.addEventListener('click', function() {
+            if (this.disabled) return;
+            
+            const keywords = keywordInput.value.trim();
+            
+            // Simulate processing
+            this.textContent = '처리 중...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                // Store keywords (in real app, this would be sent to backend)
+                localStorage.setItem('reportKeywords', keywords);
+                
+                // Navigate to next step
+                window.location.href = 'ui_13.html';
+            }, 1500);
+        });
+
+        // Auto-save functionality
+        keywordInput.addEventListener('blur', function() {
+            const value = this.value.trim();
+            if (value) {
+                localStorage.setItem('draftKeywords', value);
+            }
+        });
+
+        // Load draft on page load
+        window.addEventListener('load', function() {
+            const draft = localStorage.getItem('draftKeywords');
+            if (draft) {
+                keywordInput.value = draft;
+                validateInput();
+            }
+            
+            keywordInput.focus();
+        });
+
+        // Character counter
+        keywordInput.addEventListener('input', function() {
+            const value = this.value;
+            const keywords = value.split(',').filter(k => k.trim().length > 0);
+            
+            if (keywords.length > 5) {
+                this.style.borderColor = '#F44336';
+                this.style.boxShadow = '0 0 0 3px rgba(244, 67, 54, 0.1)';
+            } else {
+                this.style.borderColor = '';
+                this.style.boxShadow = '';
+            }
+        });
+    </script>
+</body>
+</html>

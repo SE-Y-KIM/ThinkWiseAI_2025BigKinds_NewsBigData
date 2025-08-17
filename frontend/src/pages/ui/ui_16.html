@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkWise AI - 리포트 상세</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+            
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+            
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+            
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-focus: #FFD700;
+            
+            --font-family-primary: 'Montserrat', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-plan {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+
+        /* Report Header */
+        .report-header {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .report-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .report-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .meta-icon {
+            color: var(--color-primary-500);
+            font-size: 1.1rem;
+        }
+
+        .report-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .keyword-tag {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--color-primary-500);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .report-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.05));
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--color-primary-500);
+            color: var(--color-primary-500);
+        }
+
+        .btn-outline:hover {
+            background: var(--color-primary-500);
+            color: var(--color-background-primary);
+            transform: translateY(-1px);
+        }
+
+        /* Content Sections */
+        .content-grid {
+            display: grid;
+            gap: var(--spacing-2xl);
+        }
+
+        .content-section {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .section-icon {
+            color: var(--color-primary-500);
+            font-size: 1.5rem;
+        }
+
+        /* Summary Section */
+        .summary-text {
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.03), rgba(255, 165, 0, 0.03));
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .chart-card {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            border-color: var(--color-primary-500);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.1);
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border: 2px dashed rgba(255, 215, 0, 0.3);
+            border-radius: var(--border-radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* Analysis Section */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .analysis-card {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+        }
+
+        .analysis-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .analysis-title.positive {
+            color: #4CAF50;
+        }
+
+        .analysis-title.negative {
+            color: #F44336;
+        }
+
+        .analysis-title.neutral {
+            color: #FF9800;
+        }
+
+        .analysis-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .analysis-item {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            padding: var(--spacing-sm);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--border-radius-sm);
+            border-left: 3px solid var(--color-primary-500);
+        }
+
+        /* References Section */
+        .references-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .reference-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--color-background-tertiary);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--color-border-light);
+            transition: all 0.3s ease;
+        }
+
+        .reference-item:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.02));
+        }
+
+        .reference-icon {
+            color: var(--color-primary-500);
+            font-size: 1.2rem;
+        }
+
+        .reference-text {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Status Message */
+        .status-message {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 165, 0, 0.05));
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            display: none;
+        }
+
+        .status-text {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .report-title {
+                font-size: 1.75rem;
+            }
+
+            .report-meta {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .report-actions {
+                flex-direction: column;
+            }
+
+            .charts-grid,
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                gap: var(--spacing-sm);
+            }
+
+            .report-title {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: var(--spacing-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="ui_1.html" class="brand">
+                <span class="logo-icon">🧠</span>
+                <span class="brand-name">ThinkWise</span>
+            </a>
+            <div class="user-info">
+                <div class="user-avatar">김</div>
+                <div class="user-plan">Pro</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Report Header -->
+            <div class="report-header">
+                <h1 class="report-title">2024년 글로벌 반도체 시장 전망</h1>
+                
+                <div class="report-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">📅</span>
+                        <span>작성일: 2024-08-15</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🔍</span>
+                        <span>분석 키워드</span>
+                    </div>
+                </div>
+
+                <div class="report-keywords">
+                    <span class="keyword-tag">AI 반도체</span>
+                    <span class="keyword-tag">서버 수요</span>
+                    <span class="keyword-tag">원자재 가격</span>
+                </div>
+
+                <div class="report-actions">
+                    <button class="action-button btn-primary" onclick="downloadPDF()">
+                        📄 PDF 다운로드
+                    </button>
+                    <button class="action-button btn-secondary" onclick="shareReport()">
+                        🔗 커뮤니티에 공유
+                    </button>
+                    <button class="action-button btn-outline" onclick="toggleFavorite()">
+                        ⭐ 즐겨찾기 추가
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Summary Section -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📋</span>
+                        요약
+                    </h2>
+                    <p class="summary-text">
+                        글로벌 반도체 시장은 AI 서버와 데이터센터 수요 확대로 전년 대비 8.4% 성장할 것으로 예상됩니다. 다만, 원자재 가격 상승과 지정학적 리스크가 하반기 변동성 요인으로 작용할 수 있습니다.
+                    </p>
+                </div>
+
+                <!-- Data Visualization Section -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📊</span>
+                        데이터 시각화
+                    </h2>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3 class="chart-title">글로벌 반도체 매출 추이 (2018~2024)</h3>
+                            <div class="chart-placeholder">
+                                📈 차트 로딩 중...
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3 class="chart-title">주요 기업별 시장 점유율</h3>
+                            <div class="chart-placeholder">
+                                🥧 차트 로딩 중...
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3 class="chart-title">원자재 가격 변동 추이</h3>
+                            <div class="chart-placeholder">
+                                📉 차트 로딩 중...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Section -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🔍</span>
+                        본문 분석
+                    </h2>
+                    <div class="analysis-grid">
+                        <div class="analysis-card">
+                            <h3 class="analysis-title positive">
+                                <span>✅</span>
+                                긍정 요인
+                            </h3>
+                            <ul class="analysis-list">
+                                <li class="analysis-item">AI 서버 수요 폭발</li>
+                                <li class="analysis-item">주요국 반도체 산업 정책 지원</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-card">
+                            <h3 class="analysis-title negative">
+                                <span>❌</span>
+                                부정 요인
+                            </h3>
+                            <ul class="analysis-list">
+                                <li class="analysis-item">원자재 가격 상승</li>
+                                <li class="analysis-item">미·중 무역 갈등 지속</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-card">
+                            <h3 class="analysis-title neutral">
+                                <span>⚖️</span>
+                                중립 시나리오
+                            </h3>
+                            <ul class="analysis-list">
+                                <li class="analysis-item">공급망 안정화 시 완만한 성장세 가능</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- References Section -->
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📚</span>
+                        참고자료·출처
+                    </h2>
+                    <ul class="references-list">
+                        <li class="reference-item">
+                            <span class="reference-icon">📄</span>
+                            <span class="reference-text">산업통상자원부 보고서 (2024)</span>
+                        </li>
+                        <li class="reference-item">
+                            <span class="reference-icon">📊</span>
+                            <span class="reference-text">글로벌 시장조사기관 리포트</span>
+                        </li>
+                        <li class="reference-item">
+                            <span class="reference-icon">📰</span>
+                            <span class="reference-text">주요 언론 보도 기사</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Status Message -->
+            <div class="status-message" id="statusMessage">
+                <p class="status-text" id="statusText"></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Download PDF
+        function downloadPDF() {
+            const statusMessage = document.getElementById('statusMessage');
+            const statusText = document.getElementById('statusText');
+            
+            statusText.textContent = 'PDF 파일 생성 중입니다...';
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusText.textContent = '다운로드가 시작되었습니다!';
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 3000);
+            }, 2000);
+        }
+
+        // Share report
+        function shareReport() {
+            const statusMessage = document.getElementById('statusMessage');
+            const statusText = document.getElementById('statusText');
+            
+            statusText.textContent = '리포트 링크와 주요 요약이 함께 전송됩니다.';
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Toggle favorite
+        function toggleFavorite() {
+            const button = event.target;
+            const isFavorited = button.textContent.includes('제거');
+            
+            if (isFavorited) {
+                button.innerHTML = '⭐ 즐겨찾기 추가';
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-outline');
+            } else {
+                button.innerHTML = '⭐ 즐겨찾기 제거';
+                button.classList.remove('btn-outline');
+                button.classList.add('btn-primary');
+            }
+        }
+
+        // Load charts (simulation)
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+            
+            chartPlaceholders.forEach((placeholder, index) => {
+                setTimeout(() => {
+                    placeholder.innerHTML = '📊 차트 데이터 로드 완료';
+                    placeholder.style.background = 'linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1))';
+                    placeholder.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                    placeholder.style.color = 'var(--color-primary-500)';
+                }, (index + 1) * 1000);
+            });
+        });
+    </script>
+</body>
+</html>

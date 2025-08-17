@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkWise AI - AI 채팅 분석</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-50: #FFF8E1;
+            --color-primary-100: #FFF1C4;
+            --color-primary-200: #FFE082;
+            --color-primary-300: #FFD54F;
+            --color-primary-400: #FFCA28;
+            --color-primary-500: #FFD700;
+            --color-primary-600: #FFC107;
+            --color-primary-700: #FFB300;
+            --color-primary-800: #FFA000;
+            --color-primary-900: #FF8F00;
+            
+            --color-background-primary: #1A1A1A;
+            --color-background-secondary: #2C2C2C;
+            --color-background-tertiary: #3A3A3A;
+            
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #E0E0E0;
+            --color-text-tertiary: #BDBDBD;
+            
+            --color-border-light: #3A3A3A;
+            --color-border-medium: #4A4A4A;
+            --color-border-focus: #FFD700;
+            
+            --font-family-primary: 'Montserrat', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            background: var(--color-background-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-background-secondary);
+            border-bottom: 1px solid var(--color-border-light);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+
+        .brand-name {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .user-plan {
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, var(--color-background-primary), var(--color-background-secondary));
+        }
+
+        .chat-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: var(--spacing-2xl);
+            height: calc(100vh - 80px);
+        }
+
+        /* Chat Area */
+        .chat-area {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chat-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .chat-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chat-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: var(--spacing-lg);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .message {
+            display: flex;
+            gap: var(--spacing-md);
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .message-avatar.ai {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            color: var(--color-background-primary);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .message-avatar.user {
+            background: var(--color-background-tertiary);
+            color: var(--color-text-primary);
+        }
+
+        .message-content {
+            flex: 1;
+            max-width: 70%;
+        }
+
+        .message.user .message-content {
+            max-width: 70%;
+        }
+
+        .message-bubble {
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            position: relative;
+        }
+
+        .message.ai .message-bubble {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-light);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: var(--color-background-primary);
+        }
+
+        .message-text {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .message-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+
+        .action-button {
+            background: none;
+            border: 1px solid var(--color-border-medium);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-500);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Chat Input */
+        .chat-input-area {
+            padding: var(--spacing-lg);
+            border-top: 1px solid var(--color-border-light);
+        }
+
+        .input-container {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: flex-end;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border-medium);
+            border-radius: var(--border-radius-md);
+            background: var(--color-background-tertiary);
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            resize: none;
+            min-height: 60px;
+            max-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.02));
+        }
+
+        .message-input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+            background-size: 200% 200%;
+            animation: buttonGlow 2s ease-in-out infinite;
+            color: var(--color-background-primary);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .input-disclaimer {
+            font-size: 0.8rem;
+            color: var(--color-text-tertiary);
+            margin-top: var(--spacing-sm);
+            text-align: center;
+        }
+
+        /* Sample Questions */
+        .sample-questions {
+            margin-top: var(--spacing-lg);
+        }
+
+        .sample-title {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .sample-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .sample-question {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sample-question:hover {
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-500);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Sidebar */
+        .chat-sidebar {
+            background: var(--color-background-secondary);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text-primary);
+        }
+
+        .recent-chats {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .recent-chat {
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recent-chat:hover {
+            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-background-tertiary), rgba(255, 215, 0, 0.05));
+        }
+
+        .recent-chat-title {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .recent-chat-time {
+            font-size: 0.8rem;
+            color: var(--color-text-tertiary);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            margin-top: var(--spacing-xl);
+        }
+
+        .quick-actions-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+
+        .quick-action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .quick-action-button {
+            background: var(--color-background-tertiary);
+            border: 1px solid var(--color-border-medium);
+            color: var(--color-text-secondary);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .quick-action-button:hover {
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-500);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+
+        .loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid #FFD700;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .chat-container {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .message.user .message-content {
+                max-width: 85%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-info {
+                display: none;
+            }
+
+            .message-content {
+                max-width: 90%;
+            }
+
+            .message.user .message-content {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="ui_1.html" class="brand">
+                <span class="logo-icon">🧠</span>
+                <span class="brand-name">ThinkWise</span>
+            </a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-name">김사용자</div>
+                    <div class="user-plan">Pro 플랜</div>
+                </div>
+                <div class="user-avatar">김</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="chat-container">
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <h1 class="chat-title">AI 채팅 분석</h1>
+                    <p class="chat-subtitle">뉴스 검색, 데이터 분석, 투자 인사이트까지 대화로 완성하세요.</p>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <!-- AI Welcome Message -->
+                    <div class="message">
+                        <div class="message-avatar ai">AI</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <div class="message-text">
+                                    분석할 뉴스 주제나 키워드를 입력하세요. 예: "전기차 시장 전망"
+                                </div>
+                                <div class="message-actions">
+                                    <button class="action-button">리포트로 저장</button>
+                                    <button class="action-button">차트 생성</button>
+                                    <button class="action-button">공유하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-area">
+                    <div class="input-container">
+                        <textarea 
+                            class="message-input" 
+                            id="messageInput" 
+                            placeholder="분석할 주제나 질문을 입력하세요..."
+                            rows="3"
+                        ></textarea>
+                        <button class="send-button" id="sendButton" title="분석 시작">
+                            전송
+                        </button>
+                    </div>
+                    <div class="input-disclaimer">
+                        AI의 분석은 참고 자료이며, 투자 판단의 최종 책임은 사용자에게 있습니다.
+                    </div>
+
+                    <!-- Sample Questions -->
+                    <div class="sample-questions">
+                        <div class="sample-title">샘플 질문:</div>
+                        <div class="sample-list">
+                            <div class="sample-question">미국 금리 인상이 코스피에 미치는 영향은?</div>
+                            <div class="sample-question">반도체 산업의 3분기 실적 전망 알려줘</div>
+                            <div class="sample-question">최근 유가 변동 원인 분석</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="chat-sidebar">
+                <h3 class="sidebar-title">최근 대화</h3>
+                <div class="recent-chats">
+                    <div class="recent-chat">
+                        <div class="recent-chat-title">테슬라 주가 전망</div>
+                        <div class="recent-chat-time">2시간 전</div>
+                    </div>
+                    <div class="recent-chat">
+                        <div class="recent-chat-title">AI 반도체 시장 분석</div>
+                        <div class="recent-chat-time">1일 전</div>
+                    </div>
+                    <div class="recent-chat">
+                        <div class="recent-chat-title">유럽 경기침체 가능성</div>
+                        <div class="recent-chat-time">3일 전</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h4 class="quick-actions-title">빠른 액션</h4>
+                    <div class="quick-action-buttons">
+                        <button class="quick-action-button">리포트로 저장하기</button>
+                        <button class="quick-action-button">시각화 차트 생성</button>
+                        <button class="quick-action-button">커뮤니티에 공유하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Sample AI responses
+        const sampleResponses = [
+            {
+                summary: "최근 발표된 금리 인상 소식은 금융주에 긍정적으로 작용했지만, 수출주에는 단기 부담으로 작용할 가능성이 있습니다.",
+                indicators: [
+                    { name: "코스피", value: "▲0.8%" },
+                    { name: "환율", value: "▼0.5%" }
+                ],
+                points: [
+                    "과거 금리 인상 시점과 비교",
+                    "수출·내수 산업별 영향 차이",
+                    "단기/중기 투자 전략 제안"
+                ]
+            }
+        ];
+
+        // Send message function
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            messageInput.value = '';
+
+            // Show loading
+            showLoading();
+
+            // Simulate AI response
+            setTimeout(() => {
+                hideLoading();
+                addAIResponse(sampleResponses[0]);
+            }, 2000);
+        }
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = `message-avatar ${sender}`;
+            avatar.textContent = sender === 'user' ? '사용자' : 'AI';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'message-text';
+            textDiv.textContent = text;
+
+            bubble.appendChild(textDiv);
+            content.appendChild(bubble);
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Add AI response
+        function addAIResponse(response) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar ai';
+            avatar.textContent = 'AI';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+
+            // Summary
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'message-text';
+            summaryDiv.innerHTML = `<strong>요약:</strong><br>${response.summary}`;
+            bubble.appendChild(summaryDiv);
+
+            // Indicators
+            if (response.indicators) {
+                const indicatorsDiv = document.createElement('div');
+                indicatorsDiv.className = 'message-text';
+                indicatorsDiv.innerHTML = `<strong>핵심 지표:</strong><br>${response.indicators.map(ind => `${ind.name}: ${ind.value}`).join('<br>')}`;
+                bubble.appendChild(indicatorsDiv);
+            }
+
+            // Analysis points
+            if (response.points) {
+                const pointsDiv = document.createElement('div');
+                pointsDiv.className = 'message-text';
+                pointsDiv.innerHTML = `<strong>분석 포인트:</strong><br>${response.points.map(point => `• ${point}`).join('<br>')}`;
+                bubble.appendChild(pointsDiv);
+            }
+
+            // Actions
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'message-actions';
+            actionsDiv.innerHTML = `
+                <button class="action-button">리포트로 저장</button>
+                <button class="action-button">차트 생성</button>
+                <button class="action-button">공유하기</button>
+            `;
+            bubble.appendChild(actionsDiv);
+
+            content.appendChild(bubble);
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Show loading state
+        function showLoading() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message';
+            loadingDiv.id = 'loadingMessage';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar ai';
+            avatar.textContent = 'AI';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+
+            const loading = document.createElement('div');
+            loading.className = 'loading';
+            loading.textContent = '데이터 분석 중... 잠시만 기다려주세요.';
+
+            bubble.appendChild(loading);
+            content.appendChild(bubble);
+            loadingDiv.appendChild(avatar);
+            loadingDiv.appendChild(content);
+
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Hide loading state
+        function hideLoading() {
+            const loadingMessage = document.getElementById('loadingMessage');
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Sample question click handlers
+        document.querySelectorAll('.sample-question').forEach(question => {
+            question.addEventListener('click', function() {
+                messageInput.value = this.textContent;
+                messageInput.focus();
+            });
+        });
+
+        // Recent chat click handlers
+        document.querySelectorAll('.recent-chat').forEach(chat => {
+            chat.addEventListener('click', function() {
+                const title = this.querySelector('.recent-chat-title').textContent;
+                messageInput.value = title + '에 대해 더 자세히 알려줘';
+                messageInput.focus();
+            });
+        });
+
+        // Quick action handlers
+        document.querySelectorAll('.quick-action-button').forEach(button => {
+            button.addEventListener('click', function() {
+                alert(`${this.textContent} 기능이 실행됩니다.`);
+            });
+        });
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+    </script>
+</body>
+</html>
